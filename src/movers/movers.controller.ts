@@ -9,6 +9,14 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -28,6 +36,8 @@ import { RespondCounterofferDto } from '../quotes/dto/respond-counteroffer.dto';
 import { UpdateBookingStatusDto } from '../bookings/dto/update-booking-status.dto';
 import { CreateTrackingEventDto } from '../tracking/dto/create-tracking-event.dto';
 
+@ApiTags('Movers')
+@ApiBearerAuth('JWT-auth')
 @Controller('movers')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.Mover)
@@ -42,6 +52,8 @@ export class MoversController {
 
   @Post('profile')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Create mover profile', description: 'Create profile with business info, service areas, and documents.' })
+  @ApiCreatedResponse({ description: 'Mover profile created' })
   createProfile(
     @CurrentUser() user: AuthenticatedUser,
     @Body() dto: UpsertMoverProfileDto,
@@ -50,6 +62,8 @@ export class MoversController {
   }
 
   @Put('profile')
+  @ApiOperation({ summary: 'Update mover profile' })
+  @ApiOkResponse({ description: 'Mover profile updated' })
   updateProfile(
     @CurrentUser() user: AuthenticatedUser,
     @Body() dto: UpsertMoverProfileDto,
@@ -58,17 +72,24 @@ export class MoversController {
   }
 
   @Get('profile')
+  @ApiOperation({ summary: 'Get mover profile' })
+  @ApiOkResponse({ description: 'Current mover profile' })
   getProfile(@CurrentUser() user: AuthenticatedUser) {
     return this.moversService.getProfile(user.id);
   }
 
   @Get('available-requests')
+  @ApiOperation({ summary: 'List available moving requests', description: 'Open requests available for quoting (verified movers only for quotes).' })
+  @ApiOkResponse({ description: 'List of pending/active moving requests' })
   listAvailableRequests() {
     return this.requestsService.findAvailableForMovers();
   }
 
   @Post('requests/:id/quote')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Submit quote on request', description: 'Submit a price quote for a moving request. Requires verified mover profile.' })
+  @ApiParam({ name: 'id', description: 'Moving request UUID' })
+  @ApiCreatedResponse({ description: 'Quote submitted' })
   submitQuote(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') requestId: string,
@@ -81,6 +102,9 @@ export class MoversController {
 
   @Post('quotes/:id/counteroffer')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Submit counteroffer on quote' })
+  @ApiParam({ name: 'id', description: 'Quote UUID' })
+  @ApiCreatedResponse({ description: 'Counteroffer recorded' })
   counteroffer(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') quoteId: string,
@@ -95,6 +119,9 @@ export class MoversController {
   }
 
   @Post('quotes/:id/counteroffer/respond')
+  @ApiOperation({ summary: 'Respond to customer counteroffer', description: 'Accept or reject the latest counteroffer.' })
+  @ApiParam({ name: 'id', description: 'Quote UUID' })
+  @ApiOkResponse({ description: 'Counteroffer response recorded' })
   respondToCounteroffer(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') quoteId: string,
@@ -109,11 +136,17 @@ export class MoversController {
   }
 
   @Get('bookings')
+  @ApiOperation({ summary: 'List my bookings' })
+  @ApiOkResponse({ description: 'List of mover bookings' })
   listBookings(@CurrentUser() user: AuthenticatedUser) {
     return this.bookingsService.findByMover(user.id);
   }
 
   @Post('bookings/:id/accept')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Accept booking', description: 'Accept booking and move status to in_progress.' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiCreatedResponse({ description: 'Booking accepted' })
   acceptBooking(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') bookingId: string,
@@ -122,6 +155,9 @@ export class MoversController {
   }
 
   @Post('bookings/:id/update-status')
+  @ApiOperation({ summary: 'Update booking status', description: 'Transition booking: confirmed → in_progress → completed.' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiOkResponse({ description: 'Booking status updated' })
   updateBookingStatus(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') bookingId: string,
@@ -132,6 +168,9 @@ export class MoversController {
 
   @Post('bookings/:id/tracking')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Add tracking event', description: 'Add GPS location or status update to booking timeline.' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiCreatedResponse({ description: 'Tracking event added' })
   addTrackingEvent(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') bookingId: string,
@@ -146,6 +185,9 @@ export class MoversController {
   }
 
   @Get('bookings/:id/tracking')
+  @ApiOperation({ summary: 'Get booking tracking timeline' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiOkResponse({ description: 'List of tracking events' })
   getTrackingTimeline(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') bookingId: string,

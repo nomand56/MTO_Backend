@@ -8,6 +8,14 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -28,6 +36,8 @@ import { CancelBookingDto } from '../bookings/dto/update-booking-status.dto';
 import { CreateReviewDto } from '../reviews/dto/create-review.dto';
 import { CreatePaymentDto, CreateDisputeDto } from '../admin/dto/admin.dto';
 
+@ApiTags('Customers')
+@ApiBearerAuth('JWT-auth')
 @Controller('customers')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.Customer)
@@ -43,6 +53,8 @@ export class CustomersController {
 
   @Post('requests')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Create moving request', description: 'Submit a new moving request with pickup, destination, items, and date.' })
+  @ApiCreatedResponse({ description: 'Moving request created' })
   createRequest(
     @CurrentUser() user: AuthenticatedUser,
     @Body() dto: CreateMovingRequestDto,
@@ -51,16 +63,26 @@ export class CustomersController {
   }
 
   @Get('requests')
+  @ApiOperation({ summary: 'List my moving requests' })
+  @ApiOkResponse({ description: 'List of customer moving requests with quotes' })
   listRequests(@CurrentUser() user: AuthenticatedUser) {
     return this.requestsService.findAllByCustomer(user.id);
   }
 
   @Get('requests/:id')
+  @ApiOperation({ summary: 'Get moving request by ID' })
+  @ApiParam({ name: 'id', description: 'Moving request UUID' })
+  @ApiOkResponse({ description: 'Moving request details with quotes and counteroffers' })
   getRequest(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.requestsService.findByIdForCustomer(id, user.id);
   }
 
   @Post('requests/:id/quotes/:quoteId/accept')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Accept a quote', description: 'Accept a mover quote and create a confirmed booking.' })
+  @ApiParam({ name: 'id', description: 'Moving request UUID' })
+  @ApiParam({ name: 'quoteId', description: 'Quote UUID' })
+  @ApiCreatedResponse({ description: 'Booking created from accepted quote' })
   acceptQuote(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') requestId: string,
@@ -70,6 +92,11 @@ export class CustomersController {
   }
 
   @Post('requests/:id/quotes/:quoteId/counteroffer')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Submit counteroffer on a quote', description: 'Negotiate price with a counteroffer.' })
+  @ApiParam({ name: 'id', description: 'Moving request UUID' })
+  @ApiParam({ name: 'quoteId', description: 'Quote UUID' })
+  @ApiCreatedResponse({ description: 'Counteroffer recorded' })
   counteroffer(
     @CurrentUser() user: AuthenticatedUser,
     @Param('quoteId') quoteId: string,
@@ -84,16 +111,24 @@ export class CustomersController {
   }
 
   @Get('bookings')
+  @ApiOperation({ summary: 'List my bookings' })
+  @ApiOkResponse({ description: 'List of customer bookings' })
   listBookings(@CurrentUser() user: AuthenticatedUser) {
     return this.bookingsService.findByCustomer(user.id);
   }
 
   @Get('bookings/:id')
+  @ApiOperation({ summary: 'Get booking by ID' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiOkResponse({ description: 'Booking details with status history' })
   getBooking(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.bookingsService.findByIdForUser(id, user.id, [UserRole.Customer]);
   }
 
   @Post('bookings/:id/cancel')
+  @ApiOperation({ summary: 'Cancel a booking' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiOkResponse({ description: 'Booking cancelled' })
   cancelBooking(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
@@ -104,6 +139,9 @@ export class CustomersController {
 
   @Post('bookings/:id/review')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Submit review', description: 'Submit a rating and review after booking completion.' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiCreatedResponse({ description: 'Review submitted' })
   submitReview(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') bookingId: string,
@@ -114,6 +152,9 @@ export class CustomersController {
 
   @Post('bookings/:id/payment')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Create payment', description: 'Record a booking payment with platform commission.' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiCreatedResponse({ description: 'Payment recorded' })
   createPayment(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') bookingId: string,
@@ -124,6 +165,9 @@ export class CustomersController {
 
   @Post('bookings/:id/dispute')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Raise a dispute', description: 'Open a dispute for a booking issue.' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiCreatedResponse({ description: 'Dispute created' })
   createDispute(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') bookingId: string,
