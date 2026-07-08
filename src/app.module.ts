@@ -24,6 +24,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { PaymentsModule } from './payments/payments.module';
 import { AdminModule } from './admin/admin.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { CustomersModule } from './customers/customers.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
     PaymentsModule,
     AdminModule,
     AnalyticsModule,
+    CustomersModule,
   ],
   controllers: [AppController],
   providers: [

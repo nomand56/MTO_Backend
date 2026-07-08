@@ -10,6 +10,11 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from '../users/entities/user.entity';
 import { comparePassword, hashPassword } from '../common/utils/hash.util';
+import {
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  VerifyEmailDto,
+} from './dto/password.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +26,13 @@ export class AuthService {
 
   async register(registerDto: RegisterDto) {
     const user = await this.usersService.create(registerDto);
+
+    if (!user.isVerified) {
+      const verificationToken =
+        await this.usersService.setEmailVerificationToken(user.id);
+      console.log(`Email verification token for ${user.email}: ${verificationToken}`);
+    }
+
     const tokens = await this.generateTokens(user);
     const hashedRefreshToken = await hashPassword(tokens.refreshToken);
     await this.usersService.updateRefreshToken(user.id, hashedRefreshToken);
@@ -95,6 +107,26 @@ export class AuthService {
 
   async logout(userId: string) {
     await this.usersService.updateRefreshToken(userId, null);
+  }
+
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const result = await this.usersService.setPasswordResetToken(dto.email);
+    if (result) {
+      console.log(`Password reset token for ${result.user.email}: ${result.token}`);
+    }
+    return {
+      message: 'If the email exists, a password reset link has been sent.',
+    };
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    await this.usersService.resetPassword(dto.token, dto.password);
+    return { message: 'Password reset successfully' };
+  }
+
+  async verifyEmail(dto: VerifyEmailDto) {
+    const user = await this.usersService.verifyEmail(dto.token);
+    return { message: 'Email verified successfully', user };
   }
 
   private async generateTokens(user: User) {

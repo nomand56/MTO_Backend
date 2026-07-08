@@ -39,6 +39,18 @@ export class User {
   isVerified: boolean;
 
   @Column({ type: 'varchar', nullable: true, select: false })
+  emailVerificationToken?: string | null;
+
+  @Column({ type: 'timestamp', nullable: true, select: false })
+  emailVerificationExpires?: Date | null;
+
+  @Column({ type: 'varchar', nullable: true, select: false })
+  passwordResetToken?: string | null;
+
+  @Column({ type: 'timestamp', nullable: true, select: false })
+  passwordResetExpires?: Date | null;
+
+  @Column({ type: 'varchar', nullable: true, select: false })
   refreshTokenHash?: string | null;
 
   @CreateDateColumn()

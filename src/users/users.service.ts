@@ -1,6 +1,7 @@
-import { Injectable, ConflictException, BadRequestException } from '@nestjs/common';
+import { Injectable, ConflictException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource } from 'typeorm';
+import { Repository, DataSource, MoreThan } from 'typeorm';
+import { randomBytes } from 'crypto';
 import { User } from './entities/user.entity';
 import { CustomerProfile } from './entities/customer-profile.entity';
 import { MoverProfile } from '../movers/entities/mover-profile.entity';
@@ -146,5 +147,90 @@ export class UsersService {
     await this.userRepository.update(userId, {
       refreshTokenHash: hashedRefreshToken,
     });
+  }
+
+  async setPasswordResetToken(email: string) {
+    const user = await this.userRepository.findOne({
+      where: { email: email.toLowerCase().trim() },
+      select: {
+        id: true,
+        email: true,
+        passwordResetToken: true,
+        passwordResetExpires: true,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const token = randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 60 * 60 * 1000);
+
+    await this.userRepository.update(user.id, {
+      passwordResetToken: token,
+      passwordResetExpires: expires,
+    });
+
+    return { user, token };
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        passwordResetToken: token,
+        passwordResetExpires: MoreThan(new Date()),
+      },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        passwordResetToken: true,
+        passwordResetExpires: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Invalid or expired reset token');
+    }
+
+    user.password = await hashPassword(newPassword);
+    user.passwordResetToken = null;
+    user.passwordResetExpires = null;
+    await this.userRepository.save(user);
+
+    return user;
+  }
+
+  async setEmailVerificationToken(userId: string) {
+    const token = randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    await this.userRepository.update(userId, {
+      emailVerificationToken: token,
+      emailVerificationExpires: expires,
+    });
+
+    return token;
+  }
+
+  async verifyEmail(token: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        emailVerificationToken: token,
+        emailVerificationExpires: MoreThan(new Date()),
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Invalid or expired verification token');
+    }
+
+    user.isVerified = true;
+    user.emailVerificationToken = null;
+    user.emailVerificationExpires = null;
+    await this.userRepository.save(user);
+
+    return user;
   }
 }

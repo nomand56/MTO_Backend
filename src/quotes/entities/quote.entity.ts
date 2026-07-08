@@ -5,11 +5,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { MovingRequest } from '../../requests/entities/moving-request.entity';
 import { QuoteStatus } from '../../common/enums/quote-status.enum';
+import { QuoteCounteroffer } from './quote-counteroffer.entity';
 
 @Entity('quotes')
 export class Quote {
@@ -47,6 +49,9 @@ export class Quote {
   @ManyToOne(() => User, (user) => user.moverQuotes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'moverId' })
   mover: User;
+
+  @OneToMany(() => QuoteCounteroffer, (counteroffer) => counteroffer.quote)
+  counteroffers: QuoteCounteroffer[];
 
   @CreateDateColumn()
   createdAt: Date;

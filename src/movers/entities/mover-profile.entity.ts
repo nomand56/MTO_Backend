@@ -29,6 +29,15 @@ export class MoverProfile {
   @Column({ type: 'varchar', nullable: true })
   avatarUrl?: string;
 
+  @Column({ type: 'jsonb', default: [] })
+  serviceAreas: string[];
+
+  @Column({ type: 'jsonb', default: [] })
+  documents: { type: string; url: string; status: string }[];
+
+  @Column({ type: 'jsonb', nullable: true })
+  availability?: { days: string[]; hours: string };
+
   @Column()
   userId: string;
 
