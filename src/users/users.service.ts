@@ -1,0 +1,150 @@
+import { Injectable, ConflictException, BadRequestException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, DataSource } from 'typeorm';
+import { User } from './entities/user.entity';
+import { CustomerProfile } from './entities/customer-profile.entity';
+import { MoverProfile } from '../movers/entities/mover-profile.entity';
+import { UserRole } from '../common/enums/user-role.enum';
+import { RegisterDto } from '../auth/dto/register.dto';
+import { hashPassword } from '../common/utils/hash.util';
+
+@Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(CustomerProfile)
+    private readonly customerProfileRepository: Repository<CustomerProfile>,
+    @InjectRepository(MoverProfile)
+    private readonly moverProfileRepository: Repository<MoverProfile>,
+    private readonly dataSource: DataSource,
+  ) {}
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { email: email.toLowerCase().trim() },
+      relations: {
+        customerProfile: true,
+        moverProfile: true,
+      },
+    });
+  }
+
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { email: email.toLowerCase().trim() },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        roles: true,
+        isActive: true,
+        isVerified: true,
+      },
+      relations: {
+        customerProfile: true,
+        moverProfile: true,
+      },
+    });
+  }
+
+  async findById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { id },
+      relations: {
+        customerProfile: true,
+        moverProfile: true,
+      },
+    });
+  }
+
+  async findByIdWithRefreshToken(id: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        roles: true,
+        isActive: true,
+        isVerified: true,
+        refreshTokenHash: true,
+      },
+      relations: {
+        customerProfile: true,
+        moverProfile: true,
+      },
+    });
+  }
+
+  async create(registerDto: RegisterDto): Promise<User> {
+    const email = registerDto.email.toLowerCase().trim();
+
+    // Check if user already exists
+    const existingUser = await this.findByEmail(email);
+    if (existingUser) {
+      throw new ConflictException('Email is already registered');
+    }
+
+    // Role-specific validations
+    if (registerDto.role === UserRole.Customer) {
+      if (!registerDto.firstName || !registerDto.lastName) {
+        throw new BadRequestException('First name and last name are required for customer registration');
+      }
+    } else if (registerDto.role === UserRole.Mover) {
+      if (!registerDto.businessName) {
+        throw new BadRequestException('Business name is required for mover registration');
+      }
+    }
+
+    const hashedPassword = await hashPassword(registerDto.password);
+
+    // Run creation inside a transaction
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const user = new User();
+      user.email = email;
+      user.password = hashedPassword;
+      user.roles = [registerDto.role];
+      user.isActive = true;
+      user.isVerified = registerDto.role === UserRole.Customer; // Auto-verify customers, movers need manual admin verification
+
+      const savedUser = await queryRunner.manager.save(user);
+
+      if (registerDto.role === UserRole.Customer) {
+        const customerProfile = new CustomerProfile();
+        customerProfile.firstName = registerDto.firstName!;
+        customerProfile.lastName = registerDto.lastName!;
+        customerProfile.phone = registerDto.phone;
+        customerProfile.user = savedUser;
+        customerProfile.userId = savedUser.id;
+        await queryRunner.manager.save(customerProfile);
+      } else if (registerDto.role === UserRole.Mover) {
+        const moverProfile = new MoverProfile();
+        moverProfile.businessName = registerDto.businessName!;
+        moverProfile.phone = registerDto.phone;
+        moverProfile.user = savedUser;
+        moverProfile.userId = savedUser.id;
+        await queryRunner.manager.save(moverProfile);
+      }
+
+      await queryRunner.commitTransaction();
+
+      // Return the saved user with profile relations loaded
+      return (await this.findById(savedUser.id))!;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async updateRefreshToken(userId: string, hashedRefreshToken: string | null): Promise<void> {
+    await this.userRepository.update(userId, {
+      refreshTokenHash: hashedRefreshToken,
+    });
+  }
+}
