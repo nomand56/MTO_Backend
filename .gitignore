@@ -30,3 +30,5 @@ Thumbs.db
 
 # Docker
 docker-data/
+
+/BACKEND_IMPLEMENTATION_PLAN.md
