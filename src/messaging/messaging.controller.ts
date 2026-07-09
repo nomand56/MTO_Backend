@@ -34,7 +34,10 @@ export class MessagingController {
   constructor(private readonly messagingService: MessagingService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get booking messages', description: 'List chat messages for a booking (customer or mover).' })
+  @ApiOperation({
+    summary: 'Get booking messages',
+    description: 'List chat messages for a booking (customer or mover).',
+  })
   @ApiParam({ name: 'bookingId', description: 'Booking UUID' })
   @ApiOkResponse({ description: 'List of chat messages' })
   getMessages(
@@ -50,7 +53,10 @@ export class MessagingController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Send message', description: 'Send an in-app chat message on a booking.' })
+  @ApiOperation({
+    summary: 'Send message',
+    description: 'Send an in-app chat message on a booking.',
+  })
   @ApiParam({ name: 'bookingId', description: 'Booking UUID' })
   @ApiCreatedResponse({ description: 'Message sent' })
   sendMessage(

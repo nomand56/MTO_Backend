@@ -1,4 +1,9 @@
-import { Injectable, ConflictException, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource, MoreThan } from 'typeorm';
 import { randomBytes } from 'crypto';
@@ -98,11 +103,15 @@ export class UsersService {
     // Role-specific validations
     if (registerDto.role === UserRole.Customer) {
       if (!registerDto.firstName || !registerDto.lastName) {
-        throw new BadRequestException('First name and last name are required for customer registration');
+        throw new BadRequestException(
+          'First name and last name are required for customer registration',
+        );
       }
     } else if (registerDto.role === UserRole.Mover) {
       if (!registerDto.businessName) {
-        throw new BadRequestException('Business name is required for mover registration');
+        throw new BadRequestException(
+          'Business name is required for mover registration',
+        );
       }
     }
 
@@ -152,7 +161,10 @@ export class UsersService {
     }
   }
 
-  async updateRefreshToken(userId: string, hashedRefreshToken: string | null): Promise<void> {
+  async updateRefreshToken(
+    userId: string,
+    hashedRefreshToken: string | null,
+  ): Promise<void> {
     await this.userRepository.update(userId, {
       refreshTokenHash: hashedRefreshToken,
     });
@@ -269,7 +281,10 @@ export class UsersService {
         ...(dto.avatarUrl !== undefined ? { avatarUrl: dto.avatarUrl } : {}),
       };
       if (Object.keys(moverUpdates).length > 0) {
-        await this.moverProfileRepository.update(user.moverProfile.id, moverUpdates);
+        await this.moverProfileRepository.update(
+          user.moverProfile.id,
+          moverUpdates,
+        );
       }
     }
 
@@ -317,8 +332,12 @@ export class UsersService {
 
   async getStatistics(userId: string) {
     const [movingRequests, bookings] = await Promise.all([
-      this.dataSource.getRepository(MovingRequest).count({ where: { customerId: userId } }),
-      this.dataSource.getRepository(Booking).count({ where: { customerId: userId } }),
+      this.dataSource
+        .getRepository(MovingRequest)
+        .count({ where: { customerId: userId } }),
+      this.dataSource
+        .getRepository(Booking)
+        .count({ where: { customerId: userId } }),
     ]);
 
     return {

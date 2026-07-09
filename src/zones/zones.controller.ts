@@ -45,7 +45,9 @@ export class ZonesController {
   }
 
   @Get('check')
-  @ApiOperation({ summary: 'Check whether a location is inside a service zone' })
+  @ApiOperation({
+    summary: 'Check whether a location is inside a service zone',
+  })
   @ApiOkResponse({ description: 'Zone coverage result' })
   check(@Query() query: CheckZoneDto) {
     return this.zonesService.checkCoverage(query);

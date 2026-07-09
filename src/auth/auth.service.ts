@@ -30,7 +30,9 @@ export class AuthService {
     if (!user.isVerified) {
       const verificationToken =
         await this.usersService.setEmailVerificationToken(user.id);
-      console.log(`Email verification token for ${user.email}: ${verificationToken}`);
+      console.log(
+        `Email verification token for ${user.email}: ${verificationToken}`,
+      );
     }
 
     const tokens = await this.generateTokens(user);
@@ -46,7 +48,9 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.usersService.findByEmailWithPassword(loginDto.email);
+    const user = await this.usersService.findByEmailWithPassword(
+      loginDto.email,
+    );
     if (!user || !user.password) {
       throw new UnauthorizedException('Invalid email or password');
     }
@@ -112,7 +116,9 @@ export class AuthService {
   async forgotPassword(dto: ForgotPasswordDto) {
     const result = await this.usersService.setPasswordResetToken(dto.email);
     if (result) {
-      console.log(`Password reset token for ${result.user.email}: ${result.token}`);
+      console.log(
+        `Password reset token for ${result.user.email}: ${result.token}`,
+      );
     }
     return {
       message: 'If the email exists, a password reset link has been sent.',
@@ -139,7 +145,9 @@ export class AuthService {
       }),
       this.jwtService.signAsync(payload, {
         secret: this.configService.get<string>('jwt.refreshSecret'),
-        expiresIn: this.configService.get<string>('jwt.refreshExpiresIn') as any,
+        expiresIn: this.configService.get<string>(
+          'jwt.refreshExpiresIn',
+        ) as any,
       }),
     ]);
 

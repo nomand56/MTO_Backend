@@ -65,7 +65,10 @@ export class SavedAddressesService {
   async setDefault(userId: string, id: string) {
     await this.findOne(userId, id);
     await this.savedAddressRepository.update({ userId }, { isDefault: false });
-    await this.savedAddressRepository.update({ id, userId }, { isDefault: true });
+    await this.savedAddressRepository.update(
+      { id, userId },
+      { isDefault: true },
+    );
     return this.findOne(userId, id);
   }
 

@@ -8,7 +8,10 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('health')
-  @ApiOperation({ summary: 'Health check', description: 'Returns service status and timestamp.' })
+  @ApiOperation({
+    summary: 'Health check',
+    description: 'Returns service status and timestamp.',
+  })
   @ApiOkResponse({
     description: 'Service is healthy',
     schema: {

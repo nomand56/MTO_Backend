@@ -16,7 +16,9 @@ export class VehiclesController {
 
   @Get('vehicle-recommendations')
   @ApiOperation({ summary: 'Get vehicle recommendation guidance' })
-  @ApiOkResponse({ description: 'Recommendation guidance for active vehicle types' })
+  @ApiOkResponse({
+    description: 'Recommendation guidance for active vehicle types',
+  })
   getRecommendations() {
     return this.vehiclesService.getRecommendations();
   }

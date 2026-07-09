@@ -24,7 +24,11 @@ export class PaymentsService {
     private readonly notificationsService: NotificationsService,
   ) {}
 
-  async createPayment(customerId: string, bookingId: string, dto: CreatePaymentDto) {
+  async createPayment(
+    customerId: string,
+    bookingId: string,
+    dto: CreatePaymentDto,
+  ) {
     const booking = await this.bookingsService.findById(bookingId);
 
     if (booking.customerId !== customerId) {

@@ -79,7 +79,9 @@ describe('AuthController (e2e)', () => {
       expect(response.body.data.user.email).toBe(moverEmail.toLowerCase());
       expect(response.body.data.user.roles).toContain(UserRole.Mover);
       expect(response.body.data.user.moverProfile).toBeDefined();
-      expect(response.body.data.user.moverProfile.businessName).toBe('Super Movers Inc.');
+      expect(response.body.data.user.moverProfile.businessName).toBe(
+        'Super Movers Inc.',
+      );
       expect(response.body.data.user.moverProfile.phone).toBe('9876543210');
       expect(response.body.data.user.moverProfile.isVerified).toBe(false); // Mover requires admin verification
       expect(response.body.data.tokens.accessToken).toBeDefined();

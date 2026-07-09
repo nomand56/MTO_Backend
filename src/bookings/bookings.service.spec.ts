@@ -57,9 +57,18 @@ describe('BookingsService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BookingsService,
-        { provide: getRepositoryToken(Booking), useValue: mockBookingRepository },
-        { provide: getRepositoryToken(BookingItem), useValue: mockBookingItemRepository },
-        { provide: getRepositoryToken(BookingShare), useValue: mockBookingShareRepository },
+        {
+          provide: getRepositoryToken(Booking),
+          useValue: mockBookingRepository,
+        },
+        {
+          provide: getRepositoryToken(BookingItem),
+          useValue: mockBookingItemRepository,
+        },
+        {
+          provide: getRepositoryToken(BookingShare),
+          useValue: mockBookingShareRepository,
+        },
         {
           provide: getRepositoryToken(BookingStatusHistory),
           useValue: mockHistoryRepository,
@@ -88,7 +97,10 @@ describe('BookingsService', () => {
       destinationAddress: '456 King St',
     };
 
-    const booking = await service.createFromQuote(quote as never, request as never);
+    const booking = await service.createFromQuote(
+      quote as never,
+      request as never,
+    );
 
     expect(mockBookingRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({

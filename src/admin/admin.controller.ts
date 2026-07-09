@@ -43,14 +43,20 @@ export class AdminController {
   ) {}
 
   @Get('users')
-  @ApiOperation({ summary: 'List all users', description: 'List users with customer and mover profiles.' })
+  @ApiOperation({
+    summary: 'List all users',
+    description: 'List users with customer and mover profiles.',
+  })
   @ApiOkResponse({ description: 'List of platform users' })
   listUsers() {
     return this.adminService.listUsers();
   }
 
   @Put('users/:id/verify')
-  @ApiOperation({ summary: 'Verify user', description: 'Verify user account and mover profile if applicable.' })
+  @ApiOperation({
+    summary: 'Verify user',
+    description: 'Verify user account and mover profile if applicable.',
+  })
   @ApiParam({ name: 'id', description: 'User UUID' })
   @ApiOkResponse({ description: 'User verified' })
   verifyUser(
@@ -88,7 +94,10 @@ export class AdminController {
 
   @Post('promotions')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Create promotion', description: 'Create a discount code or promotion campaign.' })
+  @ApiOperation({
+    summary: 'Create promotion',
+    description: 'Create a discount code or promotion campaign.',
+  })
   @ApiCreatedResponse({ description: 'Promotion created' })
   createPromotion(
     @CurrentUser() admin: AuthenticatedUser,
@@ -106,7 +115,10 @@ export class AdminController {
   }
 
   @Get('analytics')
-  @ApiOperation({ summary: 'Platform analytics dashboard', description: 'Users, marketplace stats, revenue, and quality metrics.' })
+  @ApiOperation({
+    summary: 'Platform analytics dashboard',
+    description: 'Users, marketplace stats, revenue, and quality metrics.',
+  })
   @ApiOkResponse({
     description: 'Analytics dashboard data',
     schema: {
@@ -114,7 +126,12 @@ export class AdminController {
         success: true,
         data: {
           users: { total: 10, customers: 7, movers: 2 },
-          marketplace: { requests: 5, quotes: 8, bookings: 3, completedBookings: 1 },
+          marketplace: {
+            requests: 5,
+            quotes: 8,
+            bookings: 3,
+            completedBookings: 1,
+          },
           revenue: { totalRevenue: 2250, totalCommission: 225 },
           quality: { totalReviews: 1, averageRating: 5, openDisputes: 0 },
         },

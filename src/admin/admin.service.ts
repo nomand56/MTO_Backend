@@ -94,11 +94,17 @@ export class AdminService {
     });
   }
 
-  async createDispute(userId: string, bookingId: string, dto: CreateDisputeDto) {
+  async createDispute(
+    userId: string,
+    bookingId: string,
+    dto: CreateDisputeDto,
+  ) {
     const booking = await this.bookingsService.findById(bookingId);
 
     if (booking.customerId !== userId && booking.moverId !== userId) {
-      throw new BadRequestException('You cannot raise a dispute for this booking');
+      throw new BadRequestException(
+        'You cannot raise a dispute for this booking',
+      );
     }
 
     const dispute = this.disputeRepository.create({
@@ -111,7 +117,11 @@ export class AdminService {
     return this.disputeRepository.save(dispute);
   }
 
-  async resolveDispute(adminId: string, disputeId: string, dto: ResolveDisputeDto) {
+  async resolveDispute(
+    adminId: string,
+    disputeId: string,
+    dto: ResolveDisputeDto,
+  ) {
     const dispute = await this.disputeRepository.findOne({
       where: { id: disputeId },
       relations: { raisedBy: true },

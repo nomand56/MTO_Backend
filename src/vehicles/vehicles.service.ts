@@ -65,7 +65,9 @@ export class VehiclesService {
     return {
       totals,
       vehicleType,
-      estimatedPrice: Number(vehicleType.basePrice) + Number(vehicleType.pricePerKm) * distanceKm,
+      estimatedPrice:
+        Number(vehicleType.basePrice) +
+        Number(vehicleType.pricePerKm) * distanceKm,
       alternatives: candidates.slice(1, 4),
     };
   }

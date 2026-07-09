@@ -52,7 +52,10 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Login', description: 'Authenticate with email and password.' })
+  @ApiOperation({
+    summary: 'Login',
+    description: 'Authenticate with email and password.',
+  })
   @ApiOkResponse({ description: 'Returns user profile and JWT tokens' })
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
@@ -62,7 +65,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Refresh access token',
-    description: 'Rotate access and refresh tokens using a valid refresh token.',
+    description:
+      'Rotate access and refresh tokens using a valid refresh token.',
   })
   @ApiOkResponse({ description: 'New access and refresh tokens' })
   async refresh(@Body() refreshTokenDto: RefreshTokenDto) {
@@ -73,7 +77,10 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Logout', description: 'Invalidate the current refresh token.' })
+  @ApiOperation({
+    summary: 'Logout',
+    description: 'Invalidate the current refresh token.',
+  })
   @ApiOkResponse({ description: 'Logged out successfully' })
   async logout(@CurrentUser() user: AuthenticatedUser) {
     await this.authService.logout(user.id);
@@ -93,7 +100,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Request password reset',
-    description: 'Sends a reset token (logged to server console in development).',
+    description:
+      'Sends a reset token (logged to server console in development).',
   })
   @ApiOkResponse({ description: 'Reset email sent if account exists' })
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
@@ -102,7 +110,10 @@ export class AuthController {
 
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Reset password', description: 'Reset password using token from forgot-password.' })
+  @ApiOperation({
+    summary: 'Reset password',
+    description: 'Reset password using token from forgot-password.',
+  })
   @ApiOkResponse({ description: 'Password reset successfully' })
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto);
@@ -110,7 +121,10 @@ export class AuthController {
 
   @Post('verify-email')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Verify email', description: 'Verify email address using verification token.' })
+  @ApiOperation({
+    summary: 'Verify email',
+    description: 'Verify email address using verification token.',
+  })
   @ApiOkResponse({ description: 'Email verified successfully' })
   async verifyEmail(@Body() dto: VerifyEmailDto) {
     return this.authService.verifyEmail(dto);

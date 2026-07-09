@@ -56,7 +56,9 @@ export class BookingsService {
     request: MovingRequest,
     manager?: EntityManager,
   ) {
-    const repo = manager ? manager.getRepository(Booking) : this.bookingRepository;
+    const repo = manager
+      ? manager.getRepository(Booking)
+      : this.bookingRepository;
     const historyRepo = manager
       ? manager.getRepository(BookingStatusHistory)
       : this.historyRepository;
@@ -222,11 +224,14 @@ export class BookingsService {
     const booking = await this.findByIdForUser(id, userId, roles);
 
     if (![BookingStatus.Draft, BookingStatus.Open].includes(booking.status)) {
-      throw new BadRequestException('Only draft or open bookings can be updated');
+      throw new BadRequestException(
+        'Only draft or open bookings can be updated',
+      );
     }
 
     if (dto.pickupAddress) booking.pickupAddress = { ...dto.pickupAddress };
-    if (dto.destinationAddress) booking.destinationAddress = { ...dto.destinationAddress };
+    if (dto.destinationAddress)
+      booking.destinationAddress = { ...dto.destinationAddress };
     if (dto.scheduledDate) booking.scheduledDate = new Date(dto.scheduledDate);
     if (dto.notes !== undefined) booking.notes = dto.notes;
     if (dto.vehicleTypeId) booking.vehicleTypeId = dto.vehicleTypeId;
@@ -238,10 +243,17 @@ export class BookingsService {
       );
     }
 
-    if (dto.pickupAddress || dto.destinationAddress || dto.items || dto.distanceKm !== undefined) {
+    if (
+      dto.pickupAddress ||
+      dto.destinationAddress ||
+      dto.items ||
+      dto.distanceKm !== undefined
+    ) {
       const pricing = await this.buildPricing({
-        pickupAddress: booking.pickupAddress as unknown as CreateBookingDto['pickupAddress'],
-        destinationAddress: booking.destinationAddress as unknown as CreateBookingDto['destinationAddress'],
+        pickupAddress:
+          booking.pickupAddress as unknown as CreateBookingDto['pickupAddress'],
+        destinationAddress:
+          booking.destinationAddress as unknown as CreateBookingDto['destinationAddress'],
         scheduledDate: booking.scheduledDate.toISOString(),
         items: (booking.items ?? []).map((item) => ({
           name: item.name,
@@ -273,7 +285,12 @@ export class BookingsService {
     return { message: 'Booking deleted' };
   }
 
-  async cancel(id: string, userId: string, roles: UserRole[], dto: CancelBookingDto) {
+  async cancel(
+    id: string,
+    userId: string,
+    roles: UserRole[],
+    dto: CancelBookingDto,
+  ) {
     const booking = await this.findByIdForUser(id, userId, roles);
 
     if (booking.status === BookingStatus.Completed) {
@@ -318,7 +335,11 @@ export class BookingsService {
   ) {
     const booking = await this.findByIdForUser(id, userId, roles);
 
-    if ([BookingStatus.Completed, BookingStatus.Cancelled].includes(booking.status)) {
+    if (
+      [BookingStatus.Completed, BookingStatus.Cancelled].includes(
+        booking.status,
+      )
+    ) {
       throw new BadRequestException('Booking cannot be rescheduled');
     }
 
@@ -360,7 +381,12 @@ export class BookingsService {
     });
 
     const saved = await this.bookingRepository.save(duplicate);
-    await this.recordStatusHistory(saved.id, BookingStatus.Draft, 'Duplicated booking', userId);
+    await this.recordStatusHistory(
+      saved.id,
+      BookingStatus.Draft,
+      'Duplicated booking',
+      userId,
+    );
     return this.findById(saved.id);
   }
 
@@ -390,7 +416,12 @@ export class BookingsService {
     });
 
     const saved = await this.bookingRepository.save(rebook);
-    await this.recordStatusHistory(saved.id, BookingStatus.Open, 'Rebooked move', userId);
+    await this.recordStatusHistory(
+      saved.id,
+      BookingStatus.Open,
+      'Rebooked move',
+      userId,
+    );
     return this.findById(saved.id);
   }
 
@@ -552,11 +583,7 @@ export class BookingsService {
     );
   }
 
-  async updateStatus(
-    id: string,
-    moverId: string,
-    dto: UpdateBookingStatusDto,
-  ) {
+  async updateStatus(id: string, moverId: string, dto: UpdateBookingStatusDto) {
     const booking = await this.findById(id);
 
     if (booking.moverId !== moverId) {
@@ -570,8 +597,14 @@ export class BookingsService {
     const allowedTransitions: Record<BookingStatus, BookingStatus[]> = {
       [BookingStatus.Draft]: [BookingStatus.Open, BookingStatus.Cancelled],
       [BookingStatus.Open]: [BookingStatus.Confirmed, BookingStatus.Cancelled],
-      [BookingStatus.Confirmed]: [BookingStatus.InProgress, BookingStatus.Cancelled],
-      [BookingStatus.InProgress]: [BookingStatus.Completed, BookingStatus.Cancelled],
+      [BookingStatus.Confirmed]: [
+        BookingStatus.InProgress,
+        BookingStatus.Cancelled,
+      ],
+      [BookingStatus.InProgress]: [
+        BookingStatus.Completed,
+        BookingStatus.Cancelled,
+      ],
       [BookingStatus.Completed]: [],
       [BookingStatus.Cancelled]: [],
     };
@@ -588,9 +621,13 @@ export class BookingsService {
     await this.recordStatusHistory(booking.id, dto.status, dto.note, moverId);
 
     if (dto.status === BookingStatus.Completed && booking.requestId) {
-      await this.bookingRepository.manager.update(MovingRequest, booking.requestId, {
-        status: MovingRequestStatus.Completed,
-      });
+      await this.bookingRepository.manager.update(
+        MovingRequest,
+        booking.requestId,
+        {
+          status: MovingRequestStatus.Completed,
+        },
+      );
     }
 
     await this.notificationsService.create(
@@ -633,10 +670,11 @@ export class BookingsService {
         destination.longitude,
       );
 
-    const vehicleRecommendation = await this.vehiclesService.calculateRecommendation({
-      items: dto.items,
-      distanceKm,
-    });
+    const vehicleRecommendation =
+      await this.vehiclesService.calculateRecommendation({
+        items: dto.items,
+        distanceKm,
+      });
 
     const zonePricing =
       pickup.latitude !== undefined && pickup.longitude !== undefined
@@ -685,7 +723,11 @@ export class BookingsService {
       Math.cos(toRad(pickupLat)) *
         Math.cos(toRad(destinationLat)) *
         Math.sin(dLng / 2) ** 2;
-    return Number((earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))).toFixed(2));
+    return Number(
+      (earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))).toFixed(
+        2,
+      ),
+    );
   }
 
   private async recordStatusHistory(

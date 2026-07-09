@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notification } from './entities/notification.entity';
@@ -54,7 +58,10 @@ export class NotificationsService {
   }
 
   async markAllAsRead(userId: string) {
-    await this.notificationRepository.update({ userId, isRead: false }, { isRead: true });
+    await this.notificationRepository.update(
+      { userId, isRead: false },
+      { isRead: true },
+    );
     return { message: 'All notifications marked as read' };
   }
 }

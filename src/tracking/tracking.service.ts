@@ -31,7 +31,8 @@ export class TrackingService {
       roles,
     );
 
-    const isMover = roles.includes(UserRole.Mover) && booking.moverId === userId;
+    const isMover =
+      roles.includes(UserRole.Mover) && booking.moverId === userId;
     if (!isMover && !roles.includes(UserRole.Admin)) {
       throw new ForbiddenException('Only movers can add tracking events');
     }

@@ -17,7 +17,9 @@ export class BookingShare {
   @Column()
   bookingId: string;
 
-  @ManyToOne(() => Booking, (booking) => booking.shares, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Booking, (booking) => booking.shares, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'bookingId' })
   booking: Booking;
 

@@ -31,7 +31,9 @@ export class ReviewsService {
     }
 
     if (booking.status !== BookingStatus.Completed) {
-      throw new BadRequestException('Reviews can only be submitted for completed bookings');
+      throw new BadRequestException(
+        'Reviews can only be submitted for completed bookings',
+      );
     }
 
     if (!booking.moverId) {
@@ -56,7 +58,7 @@ export class ReviewsService {
     const saved = await this.reviewRepository.save(review);
 
     await this.notificationsService.create(
-      booking.moverId!,
+      booking.moverId,
       NotificationType.Review,
       'New review received',
       `You received a ${dto.rating}-star review.`,
@@ -80,7 +82,9 @@ export class ReviewsService {
   }
 
   async reportReview(reviewId: string) {
-    const review = await this.reviewRepository.findOne({ where: { id: reviewId } });
+    const review = await this.reviewRepository.findOne({
+      where: { id: reviewId },
+    });
     if (!review) {
       throw new NotFoundException('Review not found');
     }

@@ -56,11 +56,15 @@ export class AnalyticsService {
         .getCount(),
       this.requestRepository.count(),
       this.bookingRepository.count(),
-      this.bookingRepository.count({ where: { status: BookingStatus.Completed } }),
+      this.bookingRepository.count({
+        where: { status: BookingStatus.Completed },
+      }),
       this.quoteRepository.count(),
       this.reviewRepository.count(),
       this.disputeRepository.count({ where: { status: DisputeStatus.Open } }),
-      this.paymentRepository.find({ where: { status: PaymentStatus.Completed } }),
+      this.paymentRepository.find({
+        where: { status: PaymentStatus.Completed },
+      }),
     ]);
 
     const totalRevenue = payments.reduce(

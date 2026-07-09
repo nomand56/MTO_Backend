@@ -95,7 +95,11 @@ Errors return:
 ${API_ENDPOINTS}`,
     )
     .setVersion('1.0.0')
-    .setContact('MoveThisOut', 'https://movethisout.com', 'support@movethisout.com')
+    .setContact(
+      'MoveThisOut',
+      'https://movethisout.com',
+      'support@movethisout.com',
+    )
     .addServer(`http://localhost:3000/${apiPrefix}`, 'Local development')
     .addBearerAuth(
       {
@@ -109,13 +113,22 @@ ${API_ENDPOINTS}`,
       'JWT-auth',
     )
     .addTag('Health', 'Service health check')
-    .addTag('Auth', 'Registration, login, tokens, password reset, email verification')
+    .addTag(
+      'Auth',
+      'Registration, login, tokens, password reset, email verification',
+    )
     .addTag('Users', 'Profile, preferences, privacy, activity, and statistics')
     .addTag('Saved Addresses', 'Saved places and default address management')
     .addTag('Bookings', 'Booking creation, estimates, live tracking, and items')
     .addTag('Vehicles', 'Vehicle types and load-based recommendations')
-    .addTag('Zones', 'Service zones, coverage checks, pricing, and availability')
-    .addTag('Customers', 'Customer moving requests, quotes, bookings, reviews, payments')
+    .addTag(
+      'Zones',
+      'Service zones, coverage checks, pricing, and availability',
+    )
+    .addTag(
+      'Customers',
+      'Customer moving requests, quotes, bookings, reviews, payments',
+    )
     .addTag('Movers', 'Mover profiles, quotes, bookings, tracking')
     .addTag('Admin', 'User verification, disputes, promotions, analytics')
     .addTag('Notifications', 'In-app notifications')
@@ -123,7 +136,8 @@ ${API_ENDPOINTS}`,
     .build();
 
   const document = SwaggerModule.createDocument(app, config, {
-    operationIdFactory: (controllerKey, methodKey) => `${controllerKey}_${methodKey}`,
+    operationIdFactory: (controllerKey, methodKey) =>
+      `${controllerKey}_${methodKey}`,
     deepScanRoutes: true,
   });
 

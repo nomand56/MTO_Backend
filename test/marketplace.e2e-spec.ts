@@ -74,7 +74,9 @@ describe('Marketplace flow (e2e)', () => {
       .send({
         businessName: 'Flow Movers',
         serviceAreas: ['Downtown'],
-        documents: [{ type: 'license', url: 'https://example.com/license.pdf' }],
+        documents: [
+          { type: 'license', url: 'https://example.com/license.pdf' },
+        ],
       })
       .expect(200);
 

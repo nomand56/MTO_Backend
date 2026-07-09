@@ -87,7 +87,9 @@ export class MoversService {
     });
 
     if (!profile?.isVerified) {
-      throw new BadRequestException('Mover profile must be verified to perform this action');
+      throw new BadRequestException(
+        'Mover profile must be verified to perform this action',
+      );
     }
 
     return profile;

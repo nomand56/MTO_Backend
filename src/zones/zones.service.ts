@@ -67,7 +67,9 @@ export class ZonesService {
     }
 
     const zone = coverage.zones[0];
-    const scheduledAt = dto.scheduledAt ? new Date(dto.scheduledAt) : new Date();
+    const scheduledAt = dto.scheduledAt
+      ? new Date(dto.scheduledAt)
+      : new Date();
     const peakMultiplier = await this.getPeakMultiplier(scheduledAt);
     const distanceKm = dto.distanceKm ?? 0;
     const zoneMultiplier = Number(zone.basePriceMultiplier);
@@ -88,11 +90,14 @@ export class ZonesService {
 
   async getAvailability(dto: ZoneAvailabilityQueryDto) {
     const coverage = await this.checkCoverage(dto);
-    const scheduledAt = dto.scheduledAt ? new Date(dto.scheduledAt) : new Date();
+    const scheduledAt = dto.scheduledAt
+      ? new Date(dto.scheduledAt)
+      : new Date();
     const peakMultiplier = await this.getPeakMultiplier(scheduledAt);
 
     return {
-      available: coverage.covered && coverage.zones.some((zone) => zone.isAvailable),
+      available:
+        coverage.covered && coverage.zones.some((zone) => zone.isAvailable),
       zones: coverage.zones,
       peakMultiplier,
       scheduledAt,
@@ -129,7 +134,9 @@ export class ZonesService {
         lng: number;
         radiusKm: number;
       };
-      return this.haversineKm(lat, lng, center.lat, center.lng) <= center.radiusKm;
+      return (
+        this.haversineKm(lat, lng, center.lat, center.lng) <= center.radiusKm
+      );
     }
 
     const polygon = zone.boundary.coordinates as number[][];

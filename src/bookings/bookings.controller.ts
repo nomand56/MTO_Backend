@@ -21,7 +21,10 @@ import {
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
-import { CurrentUser, AuthenticatedUser } from '../common/decorators/current-user.decorator';
+import {
+  CurrentUser,
+  AuthenticatedUser,
+} from '../common/decorators/current-user.decorator';
 import { UserRole } from '../common/enums/user-role.enum';
 import { BookingsService } from './bookings.service';
 import {
@@ -49,21 +52,30 @@ export class BookingsController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create booking' })
   @ApiCreatedResponse({ description: 'Booking created' })
-  create(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateBookingDto) {
+  create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: CreateBookingDto,
+  ) {
     return this.bookingsService.create(user.id, dto);
   }
 
   @Post('estimate')
   @Roles(UserRole.Customer)
   @ApiOperation({ summary: 'Estimate booking price' })
-  estimate(@CurrentUser() user: AuthenticatedUser, @Body() dto: BookingEstimateDto) {
+  estimate(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: BookingEstimateDto,
+  ) {
     return this.bookingsService.estimate(user.id, dto);
   }
 
   @Post('preview')
   @Roles(UserRole.Customer)
   @ApiOperation({ summary: 'Preview booking before confirmation' })
-  preview(@CurrentUser() user: AuthenticatedUser, @Body() dto: BookingPreviewDto) {
+  preview(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: BookingPreviewDto,
+  ) {
     return this.bookingsService.preview(user.id, dto);
   }
 
@@ -118,7 +130,12 @@ export class BookingsController {
     @Param('id') id: string,
     @Body() dto: CancelBookingDto,
   ) {
-    return this.bookingsService.cancel(id, user.id, user.roles as UserRole[], dto);
+    return this.bookingsService.cancel(
+      id,
+      user.id,
+      user.roles as UserRole[],
+      dto,
+    );
   }
 
   @Post(':id/reschedule')
@@ -129,7 +146,12 @@ export class BookingsController {
     @Param('id') id: string,
     @Body() dto: RescheduleBookingDto,
   ) {
-    return this.bookingsService.reschedule(id, user.id, [UserRole.Customer], dto);
+    return this.bookingsService.reschedule(
+      id,
+      user.id,
+      [UserRole.Customer],
+      dto,
+    );
   }
 
   @Post(':id/duplicate')
@@ -152,28 +174,44 @@ export class BookingsController {
   @Roles(UserRole.Customer, UserRole.Mover, UserRole.Admin)
   @ApiOperation({ summary: 'Get live booking status' })
   getStatus(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    return this.bookingsService.getStatus(id, user.id, user.roles as UserRole[]);
+    return this.bookingsService.getStatus(
+      id,
+      user.id,
+      user.roles as UserRole[],
+    );
   }
 
   @Get(':id/timeline')
   @Roles(UserRole.Customer, UserRole.Mover, UserRole.Admin)
   @ApiOperation({ summary: 'Get booking timeline' })
   getTimeline(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    return this.bookingsService.getTimeline(id, user.id, user.roles as UserRole[]);
+    return this.bookingsService.getTimeline(
+      id,
+      user.id,
+      user.roles as UserRole[],
+    );
   }
 
   @Get(':id/location')
   @Roles(UserRole.Customer, UserRole.Mover, UserRole.Admin)
   @ApiOperation({ summary: 'Get booking location snapshot' })
   getLocation(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    return this.bookingsService.getLocation(id, user.id, user.roles as UserRole[]);
+    return this.bookingsService.getLocation(
+      id,
+      user.id,
+      user.roles as UserRole[],
+    );
   }
 
   @Get(':id/tracking')
   @Roles(UserRole.Customer, UserRole.Mover, UserRole.Admin)
   @ApiOperation({ summary: 'Get booking tracking data' })
   getTracking(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    return this.bookingsService.getTracking(id, user.id, user.roles as UserRole[]);
+    return this.bookingsService.getTracking(
+      id,
+      user.id,
+      user.roles as UserRole[],
+    );
   }
 
   @Post(':id/share')
@@ -184,14 +222,23 @@ export class BookingsController {
     @Param('id') id: string,
     @Body() dto: ShareBookingDto,
   ) {
-    return this.bookingsService.shareBooking(id, user.id, [UserRole.Customer], dto);
+    return this.bookingsService.shareBooking(
+      id,
+      user.id,
+      [UserRole.Customer],
+      dto,
+    );
   }
 
   @Get(':id/items')
   @Roles(UserRole.Customer, UserRole.Mover, UserRole.Admin)
   @ApiOperation({ summary: 'List booking items' })
   listItems(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    return this.bookingsService.listItems(id, user.id, user.roles as UserRole[]);
+    return this.bookingsService.listItems(
+      id,
+      user.id,
+      user.roles as UserRole[],
+    );
   }
 
   @Post(':id/items')
@@ -215,7 +262,13 @@ export class BookingsController {
     @Param('itemId') itemId: string,
     @Body() dto: UpdateBookingItemDto,
   ) {
-    return this.bookingsService.updateItem(id, itemId, user.id, [UserRole.Customer], dto);
+    return this.bookingsService.updateItem(
+      id,
+      itemId,
+      user.id,
+      [UserRole.Customer],
+      dto,
+    );
   }
 
   @Delete(':id/items/:itemId')
@@ -226,7 +279,9 @@ export class BookingsController {
     @Param('id') id: string,
     @Param('itemId') itemId: string,
   ) {
-    return this.bookingsService.removeItem(id, itemId, user.id, [UserRole.Customer]);
+    return this.bookingsService.removeItem(id, itemId, user.id, [
+      UserRole.Customer,
+    ]);
   }
 
   @Post(':id/items/photo')

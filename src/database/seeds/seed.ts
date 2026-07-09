@@ -1,16 +1,14 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
+import { join } from 'path';
+import { UserRole } from '../../common/enums/user-role.enum';
+import { hashPassword } from '../../common/utils/hash.util';
 import { User } from '../../users/entities/user.entity';
 import { CustomerProfile } from '../../users/entities/customer-profile.entity';
 import { MoverProfile } from '../../movers/entities/mover-profile.entity';
-import { MovingRequest } from '../../requests/entities/moving-request.entity';
-import { Quote } from '../../quotes/entities/quote.entity';
-import { Booking } from '../../bookings/entities/booking.entity';
 import { VehicleType } from '../../vehicles/entities/vehicle-type.entity';
 import { Zone } from '../../zones/entities/zone.entity';
 import { PeakHourConfig } from '../../zones/entities/peak-hour-config.entity';
-import { UserRole } from '../../common/enums/user-role.enum';
-import { hashPassword } from '../../common/utils/hash.util';
 
 config();
 
@@ -21,22 +19,17 @@ const dataSource = new DataSource({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  entities: [
-    User,
-    CustomerProfile,
-    MoverProfile,
-    MovingRequest,
-    Quote,
-    Booking,
-    VehicleType,
-    Zone,
-    PeakHourConfig,
-  ],
+  ssl:
+    process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
+  entities: [join(__dirname, '../../**/*.entity.{ts,js}')],
   synchronize: true,
 });
 
 async function seed() {
   await dataSource.initialize();
+  console.log(
+    `Connected to ${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`,
+  );
 
   const userRepo = dataSource.getRepository(User);
   const customerProfileRepo = dataSource.getRepository(CustomerProfile);
@@ -94,7 +87,11 @@ async function seed() {
     });
     const savedUser = await userRepo.save(user);
 
-    if (seedUser.roles.includes(UserRole.Customer) && seedUser.profile && 'firstName' in seedUser.profile) {
+    if (
+      seedUser.roles.includes(UserRole.Customer) &&
+      seedUser.profile &&
+      'firstName' in seedUser.profile
+    ) {
       await customerProfileRepo.save(
         customerProfileRepo.create({
           ...seedUser.profile,
@@ -103,7 +100,11 @@ async function seed() {
       );
     }
 
-    if (seedUser.roles.includes(UserRole.Mover) && seedUser.profile && 'businessName' in seedUser.profile) {
+    if (
+      seedUser.roles.includes(UserRole.Mover) &&
+      seedUser.profile &&
+      'businessName' in seedUser.profile
+    ) {
       await moverProfileRepo.save(
         moverProfileRepo.create({
           ...seedUser.profile,
@@ -146,14 +147,20 @@ async function seed() {
   ];
 
   for (const vehicleType of vehicleTypes) {
-    const existing = await vehicleTypeRepo.findOne({ where: { name: vehicleType.name } });
+    const existing = await vehicleTypeRepo.findOne({
+      where: { name: vehicleType.name },
+    });
     if (!existing) {
       await vehicleTypeRepo.save(vehicleTypeRepo.create(vehicleType));
       console.log(`Seeded vehicle type: ${vehicleType.name}`);
+    } else {
+      console.log(`Skipped vehicle type (already exists): ${vehicleType.name}`);
     }
   }
 
-  const existingZone = await zoneRepo.findOne({ where: { name: 'Greater Toronto Area' } });
+  const existingZone = await zoneRepo.findOne({
+    where: { name: 'Greater Toronto Area' },
+  });
   if (!existingZone) {
     await zoneRepo.save(
       zoneRepo.create({
@@ -170,11 +177,23 @@ async function seed() {
       }),
     );
     console.log('Seeded zone: Greater Toronto Area');
+  } else {
+    console.log('Skipped zone (already exists): Greater Toronto Area');
   }
 
   const peakHours = [
-    { dayOfWeek: 1, startTime: '07:00:00', endTime: '09:30:00', multiplier: 1.2 },
-    { dayOfWeek: 5, startTime: '16:00:00', endTime: '19:00:00', multiplier: 1.35 },
+    {
+      dayOfWeek: 1,
+      startTime: '07:00:00',
+      endTime: '09:30:00',
+      multiplier: 1.2,
+    },
+    {
+      dayOfWeek: 5,
+      startTime: '16:00:00',
+      endTime: '19:00:00',
+      multiplier: 1.35,
+    },
   ];
 
   for (const peakHour of peakHours) {
@@ -188,6 +207,10 @@ async function seed() {
     if (!existing) {
       await peakHourRepo.save(peakHourRepo.create(peakHour));
       console.log(`Seeded peak hour config for day ${peakHour.dayOfWeek}`);
+    } else {
+      console.log(
+        `Skipped peak hour (already exists): day ${peakHour.dayOfWeek}`,
+      );
     }
   }
 

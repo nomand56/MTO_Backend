@@ -68,9 +68,7 @@ export class MessagingGateway implements OnGatewayConnection {
       { content: data.content },
     );
 
-    this.server
-      .to(`booking:${data.bookingId}`)
-      .emit('newMessage', message);
+    this.server.to(`booking:${data.bookingId}`).emit('newMessage', message);
 
     return { event: 'messageSent', message };
   }

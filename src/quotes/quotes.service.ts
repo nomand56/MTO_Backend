@@ -50,7 +50,9 @@ export class QuotesService {
       where: { requestId, moverId },
     });
     if (existing) {
-      throw new ConflictException('You already submitted a quote for this request');
+      throw new ConflictException(
+        'You already submitted a quote for this request',
+      );
     }
 
     const quote = this.quoteRepository.create({
@@ -62,7 +64,10 @@ export class QuotesService {
     const saved = await this.quoteRepository.save(quote);
 
     if (request.status === MovingRequestStatus.Pending) {
-      await this.requestsService.updateStatus(requestId, MovingRequestStatus.Active);
+      await this.requestsService.updateStatus(
+        requestId,
+        MovingRequestStatus.Active,
+      );
     }
 
     await this.notificationsService.create(
@@ -219,7 +224,9 @@ export class QuotesService {
     }
 
     if (latestCounteroffer.authorId === userId) {
-      throw new BadRequestException('You cannot respond to your own counteroffer');
+      throw new BadRequestException(
+        'You cannot respond to your own counteroffer',
+      );
     }
 
     if (role === UserRole.Customer && quote.request.customerId !== userId) {
