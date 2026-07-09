@@ -23,6 +23,24 @@ export class CustomerProfile {
   @Column({ type: 'varchar', nullable: true })
   phone?: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  avatarUrl?: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  address?: Record<string, unknown>;
+
+  @Column({ type: 'jsonb', default: {} })
+  preferences: Record<string, unknown>;
+
+  @Column({ type: 'varchar', default: 'en' })
+  language: string;
+
+  @Column({ type: 'jsonb', default: {} })
+  notificationSettings: Record<string, unknown>;
+
+  @Column({ type: 'jsonb', default: {} })
+  privacy: Record<string, unknown>;
+
   @Column()
   userId: string;
 

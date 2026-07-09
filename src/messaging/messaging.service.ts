@@ -39,6 +39,10 @@ export class MessagingService {
     const recipientId =
       booking.customerId === senderId ? booking.moverId : booking.customerId;
 
+    if (!recipientId) {
+      return saved;
+    }
+
     await this.notificationsService.create(
       recipientId,
       NotificationType.Message,

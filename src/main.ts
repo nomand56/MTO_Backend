@@ -26,7 +26,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  if (configService.get<string>('app.nodeEnv') !== 'production') {
+  if (configService.get<boolean>('app.swaggerEnabled')) {
     setupSwagger(app, apiPrefix);
   }
 

@@ -5,4 +5,8 @@ export default registerAs('app', () => ({
   port: parseInt(process.env.PORT ?? '3000', 10),
   apiPrefix: process.env.API_PREFIX ?? 'api/v1',
   corsOrigin: process.env.CORS_ORIGIN ?? 'http://localhost:3001',
+  swaggerEnabled:
+    process.env.SWAGGER_ENABLED === 'true' ||
+    (process.env.SWAGGER_ENABLED !== 'false' &&
+      (process.env.NODE_ENV ?? 'development') !== 'production'),
 }));

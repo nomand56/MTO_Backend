@@ -5,9 +5,18 @@ import { randomBytes } from 'crypto';
 import { User } from './entities/user.entity';
 import { CustomerProfile } from './entities/customer-profile.entity';
 import { MoverProfile } from '../movers/entities/mover-profile.entity';
+import { Booking } from '../bookings/entities/booking.entity';
+import { MovingRequest } from '../requests/entities/moving-request.entity';
 import { UserRole } from '../common/enums/user-role.enum';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { hashPassword } from '../common/utils/hash.util';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import {
+  UpdateLanguageDto,
+  UpdateNotificationSettingsDto,
+  UpdatePreferencesDto,
+  UpdatePrivacyDto,
+} from './dto/user-settings.dto';
 
 @Injectable()
 export class UsersService {
@@ -232,5 +241,100 @@ export class UsersService {
     await this.userRepository.save(user);
 
     return user;
+  }
+
+  async getProfile(userId: string) {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async updateProfile(userId: string, dto: UpdateProfileDto) {
+    const user = await this.getProfile(userId);
+
+    if (user.customerProfile) {
+      const profile = user.customerProfile;
+      if (dto.firstName !== undefined) profile.firstName = dto.firstName;
+      if (dto.lastName !== undefined) profile.lastName = dto.lastName;
+      if (dto.phone !== undefined) profile.phone = dto.phone;
+      if (dto.avatarUrl !== undefined) profile.avatarUrl = dto.avatarUrl;
+      if (dto.address !== undefined) profile.address = { ...dto.address };
+      await this.customerProfileRepository.save(profile);
+    } else if (user.moverProfile) {
+      const moverUpdates = {
+        ...(dto.phone !== undefined ? { phone: dto.phone } : {}),
+        ...(dto.avatarUrl !== undefined ? { avatarUrl: dto.avatarUrl } : {}),
+      };
+      if (Object.keys(moverUpdates).length > 0) {
+        await this.moverProfileRepository.update(user.moverProfile.id, moverUpdates);
+      }
+    }
+
+    return this.getProfile(userId);
+  }
+
+  async updatePreferences(userId: string, dto: UpdatePreferencesDto) {
+    const profile = await this.getCustomerProfile(userId);
+    profile.preferences = dto.preferences;
+    await this.customerProfileRepository.save(profile);
+    return this.getProfile(userId);
+  }
+
+  async updateLanguage(userId: string, dto: UpdateLanguageDto) {
+    const profile = await this.getCustomerProfile(userId);
+    profile.language = dto.language;
+    await this.customerProfileRepository.save(profile);
+    return this.getProfile(userId);
+  }
+
+  async updateNotificationSettings(
+    userId: string,
+    dto: UpdateNotificationSettingsDto,
+  ) {
+    const profile = await this.getCustomerProfile(userId);
+    profile.notificationSettings = dto.notificationSettings;
+    await this.customerProfileRepository.save(profile);
+    return this.getProfile(userId);
+  }
+
+  async updatePrivacy(userId: string, dto: UpdatePrivacyDto) {
+    const profile = await this.getCustomerProfile(userId);
+    profile.privacy = dto.privacy;
+    await this.customerProfileRepository.save(profile);
+    return this.getProfile(userId);
+  }
+
+  async getActivity(userId: string) {
+    return {
+      userId,
+      activities: [],
+      message: 'Activity tracking is ready for audit-log integration.',
+    };
+  }
+
+  async getStatistics(userId: string) {
+    const [movingRequests, bookings] = await Promise.all([
+      this.dataSource.getRepository(MovingRequest).count({ where: { customerId: userId } }),
+      this.dataSource.getRepository(Booking).count({ where: { customerId: userId } }),
+    ]);
+
+    return {
+      userId,
+      movingRequests,
+      bookings,
+    };
+  }
+
+  private async getCustomerProfile(userId: string) {
+    const profile = await this.customerProfileRepository.findOne({
+      where: { userId },
+    });
+    if (!profile) {
+      throw new NotFoundException('Customer profile not found');
+    }
+    return profile;
   }
 }

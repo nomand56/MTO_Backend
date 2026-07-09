@@ -47,13 +47,15 @@ export class PaymentsService {
 
     const saved = await this.paymentRepository.save(payment);
 
-    await this.notificationsService.create(
-      booking.moverId,
-      NotificationType.Payment,
-      'Payment received',
-      `A payment of $${dto.amount} was received for booking ${bookingId}.`,
-      { bookingId, paymentId: saved.id },
-    );
+    if (booking.moverId) {
+      await this.notificationsService.create(
+        booking.moverId,
+        NotificationType.Payment,
+        'Payment received',
+        `A payment of $${dto.amount} was received for booking ${bookingId}.`,
+        { bookingId, paymentId: saved.id },
+      );
+    }
 
     return saved;
   }

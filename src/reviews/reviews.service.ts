@@ -34,6 +34,10 @@ export class ReviewsService {
       throw new BadRequestException('Reviews can only be submitted for completed bookings');
     }
 
+    if (!booking.moverId) {
+      throw new BadRequestException('Booking does not have an assigned mover');
+    }
+
     const existing = await this.reviewRepository.findOne({
       where: { bookingId },
     });
@@ -52,7 +56,7 @@ export class ReviewsService {
     const saved = await this.reviewRepository.save(review);
 
     await this.notificationsService.create(
-      booking.moverId,
+      booking.moverId!,
       NotificationType.Review,
       'New review received',
       `You received a ${dto.rating}-star review.`,

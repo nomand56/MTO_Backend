@@ -14,6 +14,8 @@ import { MovingRequest } from '../../requests/entities/moving-request.entity';
 import { Quote } from '../../quotes/entities/quote.entity';
 import { BookingStatus } from '../../common/enums/booking-status.enum';
 import { BookingStatusHistory } from './booking-status-history.entity';
+import { BookingItem } from './booking-item.entity';
+import { BookingShare } from './booking-share.entity';
 import { Message } from '../../messaging/entities/message.entity';
 import { TrackingEvent } from '../../tracking/entities/tracking-event.entity';
 import { Review } from '../../reviews/entities/review.entity';
@@ -31,26 +33,56 @@ export class Booking {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  estimatedPrice?: number;
+
   @Column({
     type: 'enum',
     enum: BookingStatus,
-    default: BookingStatus.Confirmed,
+    default: BookingStatus.Draft,
   })
   status: BookingStatus;
 
-  @Column()
-  requestId: string;
+  @Column({ type: 'jsonb', nullable: true })
+  pickupAddress?: Record<string, unknown>;
 
-  @OneToOne(() => MovingRequest, { onDelete: 'RESTRICT' })
+  @Column({ type: 'jsonb', nullable: true })
+  destinationAddress?: Record<string, unknown>;
+
+  @Column({ type: 'varchar', nullable: true })
+  vehicleTypeId?: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  pricingBreakdown?: Record<string, unknown>;
+
+  @Column({ type: 'text', nullable: true })
+  notes?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  shareToken?: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+  currentLatitude?: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+  currentLongitude?: number;
+
+  @Column({ type: 'varchar', nullable: true })
+  requestId?: string;
+
+  @OneToOne(() => MovingRequest, { onDelete: 'RESTRICT', nullable: true })
   @JoinColumn({ name: 'requestId' })
-  request: MovingRequest;
+  request?: MovingRequest;
 
-  @Column()
-  moverId: string;
+  @Column({ type: 'varchar', nullable: true })
+  moverId?: string;
 
-  @ManyToOne(() => User, (user) => user.moverBookings, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => User, (user) => user.moverBookings, {
+    onDelete: 'RESTRICT',
+    nullable: true,
+  })
   @JoinColumn({ name: 'moverId' })
-  mover: User;
+  mover?: User;
 
   @Column()
   customerId: string;
@@ -61,12 +93,18 @@ export class Booking {
   @JoinColumn({ name: 'customerId' })
   customer: User;
 
-  @Column()
-  quoteId: string;
+  @Column({ type: 'varchar', nullable: true })
+  quoteId?: string;
 
-  @OneToOne(() => Quote, { onDelete: 'RESTRICT' })
+  @OneToOne(() => Quote, { onDelete: 'RESTRICT', nullable: true })
   @JoinColumn({ name: 'quoteId' })
-  quote: Quote;
+  quote?: Quote;
+
+  @OneToMany(() => BookingItem, (item) => item.booking, { cascade: true })
+  items: BookingItem[];
+
+  @OneToMany(() => BookingShare, (share) => share.booking)
+  shares: BookingShare[];
 
   @OneToMany(() => BookingStatusHistory, (history) => history.booking)
   statusHistory: BookingStatusHistory[];

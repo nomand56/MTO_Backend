@@ -6,6 +6,9 @@ import { MoverProfile } from '../../movers/entities/mover-profile.entity';
 import { MovingRequest } from '../../requests/entities/moving-request.entity';
 import { Quote } from '../../quotes/entities/quote.entity';
 import { Booking } from '../../bookings/entities/booking.entity';
+import { VehicleType } from '../../vehicles/entities/vehicle-type.entity';
+import { Zone } from '../../zones/entities/zone.entity';
+import { PeakHourConfig } from '../../zones/entities/peak-hour-config.entity';
 import { UserRole } from '../../common/enums/user-role.enum';
 import { hashPassword } from '../../common/utils/hash.util';
 
@@ -18,7 +21,17 @@ const dataSource = new DataSource({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  entities: [User, CustomerProfile, MoverProfile, MovingRequest, Quote, Booking],
+  entities: [
+    User,
+    CustomerProfile,
+    MoverProfile,
+    MovingRequest,
+    Quote,
+    Booking,
+    VehicleType,
+    Zone,
+    PeakHourConfig,
+  ],
   synchronize: true,
 });
 
@@ -28,6 +41,9 @@ async function seed() {
   const userRepo = dataSource.getRepository(User);
   const customerProfileRepo = dataSource.getRepository(CustomerProfile);
   const moverProfileRepo = dataSource.getRepository(MoverProfile);
+  const vehicleTypeRepo = dataSource.getRepository(VehicleType);
+  const zoneRepo = dataSource.getRepository(Zone);
+  const peakHourRepo = dataSource.getRepository(PeakHourConfig);
 
   const seeds = [
     {
@@ -97,6 +113,82 @@ async function seed() {
     }
 
     console.log(`Seeded: ${seedUser.email}`);
+  }
+
+  const vehicleTypes = [
+    {
+      name: 'Cargo Van',
+      description: 'Best for studio and one-bedroom moves',
+      basePrice: 89,
+      pricePerKm: 1.75,
+      maxWeightKg: 800,
+      maxVolumeM3: 8,
+      moverCapacity: 2,
+    },
+    {
+      name: '16ft Box Truck',
+      description: 'Best for two-bedroom homes',
+      basePrice: 129,
+      pricePerKm: 2.25,
+      maxWeightKg: 1800,
+      maxVolumeM3: 18,
+      moverCapacity: 2,
+    },
+    {
+      name: '26ft Box Truck',
+      description: 'Best for large homes and bulky items',
+      basePrice: 189,
+      pricePerKm: 2.85,
+      maxWeightKg: 3500,
+      maxVolumeM3: 32,
+      moverCapacity: 3,
+    },
+  ];
+
+  for (const vehicleType of vehicleTypes) {
+    const existing = await vehicleTypeRepo.findOne({ where: { name: vehicleType.name } });
+    if (!existing) {
+      await vehicleTypeRepo.save(vehicleTypeRepo.create(vehicleType));
+      console.log(`Seeded vehicle type: ${vehicleType.name}`);
+    }
+  }
+
+  const existingZone = await zoneRepo.findOne({ where: { name: 'Greater Toronto Area' } });
+  if (!existingZone) {
+    await zoneRepo.save(
+      zoneRepo.create({
+        name: 'Greater Toronto Area',
+        description: 'Primary launch service zone',
+        boundary: {
+          type: 'circle',
+          coordinates: { lat: 43.6532, lng: -79.3832, radiusKm: 45 },
+        },
+        basePriceMultiplier: 1,
+        baseFee: 25,
+        isActive: true,
+        isAvailable: true,
+      }),
+    );
+    console.log('Seeded zone: Greater Toronto Area');
+  }
+
+  const peakHours = [
+    { dayOfWeek: 1, startTime: '07:00:00', endTime: '09:30:00', multiplier: 1.2 },
+    { dayOfWeek: 5, startTime: '16:00:00', endTime: '19:00:00', multiplier: 1.35 },
+  ];
+
+  for (const peakHour of peakHours) {
+    const existing = await peakHourRepo.findOne({
+      where: {
+        dayOfWeek: peakHour.dayOfWeek,
+        startTime: peakHour.startTime,
+        endTime: peakHour.endTime,
+      },
+    });
+    if (!existing) {
+      await peakHourRepo.save(peakHourRepo.create(peakHour));
+      console.log(`Seeded peak hour config for day ${peakHour.dayOfWeek}`);
+    }
   }
 
   await dataSource.destroy();

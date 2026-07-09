@@ -25,6 +25,9 @@ import { PaymentsModule } from './payments/payments.module';
 import { AdminModule } from './admin/admin.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { CustomersModule } from './customers/customers.module';
+import { SavedAddressesModule } from './saved-addresses/saved-addresses.module';
+import { VehiclesModule } from './vehicles/vehicles.module';
+import { ZonesModule } from './zones/zones.module';
 
 @Module({
   imports: [
@@ -55,6 +58,9 @@ import { CustomersModule } from './customers/customers.module';
     AdminModule,
     AnalyticsModule,
     CustomersModule,
+    SavedAddressesModule,
+    VehiclesModule,
+    ZonesModule,
   ],
   controllers: [AppController],
   providers: [
