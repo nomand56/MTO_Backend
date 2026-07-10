@@ -1,0 +1,3363 @@
+MTO BACKEND - COMPREHENSIVE API TEST REPORT
+Generated: 2026-07-10T12:01:29.183Z
+Base URL: http://localhost:3000/api/v1
+
+
+================================================================================
+HEALTH | GET /health
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "status": "ok",
+    "service": "movethisout-backend",
+    "timestamp": "2026-07-10T12:01:29.297Z"
+  }
+}
+
+================================================================================
+AUTH | POST /auth/register (customer)
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:30.562Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Customer",
+        "phone": "4165550100",
+        "avatarUrl": null,
+        "address": null,
+        "preferences": {},
+        "language": "en",
+        "notificationSettings": {},
+        "privacy": {},
+        "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "createdAt": "2026-07-10T07:01:30.562Z",
+        "updatedAt": "2026-07-10T07:01:30.562Z"
+      },
+      "moverProfile": null
+    },
+    "tokens": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMjg1NDE0Ny1mMmY5LTQ3YmEtYWYxMi03ZDU2OWFmZjBkZDUiLCJlbWFpbCI6ImFwaXRlc3QtY3VzdG9tZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbImN1c3RvbWVyIl0sImlhdCI6MTc4MzY4NDg5MywiZXhwIjoxNzgzNjg1NzkzfQ.sI9QfTcKUQnQ0PdmLZzHbp4z2rSWHgkJvhgsM_ouVag",
+      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMjg1NDE0Ny1mMmY5LTQ3YmEtYWYxMi03ZDU2OWFmZjBkZDUiLCJlbWFpbCI6ImFwaXRlc3QtY3VzdG9tZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbImN1c3RvbWVyIl0sImlhdCI6MTc4MzY4NDg5MywiZXhwIjoxNzg0Mjg5NjkzfQ.JyLIsskJMFY82CymRyTBgjBOkmScZLHObOBNip4U6mk"
+    }
+  }
+}
+
+================================================================================
+AUTH | POST /auth/register (mover)
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": false,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:34.586Z",
+      "customerProfile": null,
+      "moverProfile": {
+        "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+        "businessName": "API Test Movers",
+        "phone": "4165550200",
+        "bio": null,
+        "isVerified": false,
+        "avatarUrl": null,
+        "serviceAreas": [],
+        "documents": [],
+        "availability": null,
+        "userId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+        "createdAt": "2026-07-10T07:01:34.586Z",
+        "updatedAt": "2026-07-10T07:01:34.586Z"
+      }
+    },
+    "tokens": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZTgyOGI1Yi1kMjY4LTQxMmQtYjVlOS05MzZhOTVmYWFlY2MiLCJlbWFpbCI6ImFwaXRlc3QtbW92ZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIm1vdmVyIl0sImlhdCI6MTc4MzY4NDg5NSwiZXhwIjoxNzgzNjg1Nzk1fQ.SHJfLGTFGF5tCf4bLI6i_Bb5TjblWZugy-6Vs8sToGk",
+      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZTgyOGI1Yi1kMjY4LTQxMmQtYjVlOS05MzZhOTVmYWFlY2MiLCJlbWFpbCI6ImFwaXRlc3QtbW92ZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIm1vdmVyIl0sImlhdCI6MTc4MzY4NDg5NSwiZXhwIjoxNzg0Mjg5Njk1fQ.0WQb4Xc5EfwyRbNccBVEUVUg1PM0GCE2-_KVxnU5czY"
+    },
+    "verificationToken": "c38f05305dee7b8fe9f1c1d0c0733e83a5c6e344777b7306cb4f5b792c48c28e"
+  }
+}
+
+================================================================================
+AUTH | POST /auth/login (customer)
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Customer",
+        "phone": "4165550100",
+        "avatarUrl": null,
+        "address": null,
+        "preferences": {},
+        "language": "en",
+        "notificationSettings": {},
+        "privacy": {},
+        "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "createdAt": "2026-07-10T07:01:30.562Z",
+        "updatedAt": "2026-07-10T07:01:30.562Z"
+      },
+      "moverProfile": null
+    },
+    "tokens": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMjg1NDE0Ny1mMmY5LTQ3YmEtYWYxMi03ZDU2OWFmZjBkZDUiLCJlbWFpbCI6ImFwaXRlc3QtY3VzdG9tZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbImN1c3RvbWVyIl0sImlhdCI6MTc4MzY4NDg5NiwiZXhwIjoxNzgzNjg1Nzk2fQ.Ze0FywYM43FUa-_34Uhbjm-nn2NEJ2b6XbZKLtnRX8g",
+      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMjg1NDE0Ny1mMmY5LTQ3YmEtYWYxMi03ZDU2OWFmZjBkZDUiLCJlbWFpbCI6ImFwaXRlc3QtY3VzdG9tZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbImN1c3RvbWVyIl0sImlhdCI6MTc4MzY4NDg5NiwiZXhwIjoxNzg0Mjg5Njk2fQ.nmN4Zv3v85p8a4V_TlsyFJqatDKlKZUWjRv7QxRyEfg"
+    }
+  }
+}
+
+================================================================================
+AUTH | POST /auth/login (admin)
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "63c28706-d514-4287-8d50-087f790b8bcb",
+      "email": "admin@movethisout.com",
+      "roles": [
+        "admin"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "customerProfile": null,
+      "moverProfile": null
+    },
+    "tokens": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2MyODcwNi1kNTE0LTQyODctOGQ1MC0wODdmNzkwYjhiY2IiLCJlbWFpbCI6ImFkbWluQG1vdmV0aGlzb3V0LmNvbSIsInJvbGVzIjpbImFkbWluIl0sImlhdCI6MTc4MzY4NDg5NywiZXhwIjoxNzgzNjg1Nzk3fQ.rA-gD6FuzZWKRwB89W1JHiNW_Ycl7t8N40DRnsZ0A-s",
+      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2MyODcwNi1kNTE0LTQyODctOGQ1MC0wODdmNzkwYjhiY2IiLCJlbWFpbCI6ImFkbWluQG1vdmV0aGlzb3V0LmNvbSIsInJvbGVzIjpbImFkbWluIl0sImlhdCI6MTc4MzY4NDg5NywiZXhwIjoxNzg0Mjg5Njk3fQ.DuGgQ1RVsJp-g5kec2HJpzbSAGJC7BhQfKWQNNVKgDo"
+    }
+  }
+}
+
+================================================================================
+AUTH | GET /auth/me
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "email": "apitest-customer-1783684889016@example.com",
+    "roles": [
+      "customer"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:30.562Z",
+    "updatedAt": "2026-07-10T07:01:37.269Z",
+    "customerProfile": {
+      "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+      "firstName": "API",
+      "lastName": "Customer",
+      "phone": "4165550100",
+      "avatarUrl": null,
+      "address": null,
+      "preferences": {},
+      "language": "en",
+      "notificationSettings": {},
+      "privacy": {},
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:30.562Z"
+    },
+    "moverProfile": null
+  }
+}
+
+================================================================================
+AUTH | POST /auth/refresh
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMjg1NDE0Ny1mMmY5LTQ3YmEtYWYxMi03ZDU2OWFmZjBkZDUiLCJlbWFpbCI6ImFwaXRlc3QtY3VzdG9tZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbImN1c3RvbWVyIl0sImlhdCI6MTc4MzY4NDkwMCwiZXhwIjoxNzgzNjg1ODAwfQ.xuz7rBbve3q__zgmoHZ_yZSeeirEfFSPWoIsEirN_HY",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMjg1NDE0Ny1mMmY5LTQ3YmEtYWYxMi03ZDU2OWFmZjBkZDUiLCJlbWFpbCI6ImFwaXRlc3QtY3VzdG9tZXItMTc4MzY4NDg4OTAxNkBleGFtcGxlLmNvbSIsInJvbGVzIjpbImN1c3RvbWVyIl0sImlhdCI6MTc4MzY4NDkwMCwiZXhwIjoxNzg0Mjg5NzAwfQ.A6-tntTwGEChbMdXdgjCfcDB4omG6lPOLSFjv-_i2SY"
+  }
+}
+
+================================================================================
+AUTH | POST /auth/forgot-password
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "If the email exists, a password reset link has been sent.",
+    "resetToken": "08aaa5d3464bf2cd5fd878b7774294537a00cb3a05b514ba8c9b8ce6ee8451f9"
+  }
+}
+
+================================================================================
+AUTH | POST /auth/reset-password
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "Password reset successfully"
+  }
+}
+
+================================================================================
+AUTH | POST /auth/verify-email
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "Email verified successfully",
+    "user": {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:44.417Z"
+    }
+  }
+}
+
+================================================================================
+VEHICLES | GET /vehicle-recommendations
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "description": "Best for studio and one-bedroom moves",
+        "basePrice": "89.00",
+        "pricePerKm": "1.75",
+        "maxWeightKg": "800.00",
+        "maxVolumeM3": "8.00",
+        "moverCapacity": 2,
+        "isActive": true,
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z"
+      },
+      "bestFor": "Small apartments, boxes, and light furniture"
+    },
+    {
+      "vehicleType": {
+        "id": "74cdf6f4-8bf9-4faf-81ee-d2fcb9ac3ccf",
+        "name": "16ft Box Truck",
+        "description": "Best for two-bedroom homes",
+        "basePrice": "129.00",
+        "pricePerKm": "2.25",
+        "maxWeightKg": "1800.00",
+        "maxVolumeM3": "18.00",
+        "moverCapacity": 2,
+        "isActive": true,
+        "createdAt": "2026-07-09T12:41:57.323Z",
+        "updatedAt": "2026-07-09T12:41:57.323Z"
+      },
+      "bestFor": "One-bedroom to two-bedroom moves"
+    },
+    {
+      "vehicleType": {
+        "id": "91c2a6a6-ba3a-4b5f-9239-bb3da908e323",
+        "name": "26ft Box Truck",
+        "description": "Best for large homes and bulky items",
+        "basePrice": "189.00",
+        "pricePerKm": "2.85",
+        "maxWeightKg": "3500.00",
+        "maxVolumeM3": "32.00",
+        "moverCapacity": 3,
+        "isActive": true,
+        "createdAt": "2026-07-09T12:41:58.361Z",
+        "updatedAt": "2026-07-09T12:41:58.361Z"
+      },
+      "bestFor": "Large homes, bulky furniture, and high-volume moves"
+    }
+  ]
+}
+
+================================================================================
+VEHICLES | POST /vehicle-recommendations/calculate
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "totals": {
+      "weightKg": 50,
+      "volumeM3": 2
+    },
+    "vehicleType": {
+      "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+      "name": "Cargo Van",
+      "description": "Best for studio and one-bedroom moves",
+      "basePrice": "89.00",
+      "pricePerKm": "1.75",
+      "maxWeightKg": "800.00",
+      "maxVolumeM3": "8.00",
+      "moverCapacity": 2,
+      "isActive": true,
+      "createdAt": "2026-07-09T12:41:55.620Z",
+      "updatedAt": "2026-07-09T12:41:55.620Z"
+    },
+    "estimatedPrice": 106.5,
+    "alternatives": [
+      {
+        "id": "74cdf6f4-8bf9-4faf-81ee-d2fcb9ac3ccf",
+        "name": "16ft Box Truck",
+        "description": "Best for two-bedroom homes",
+        "basePrice": "129.00",
+        "pricePerKm": "2.25",
+        "maxWeightKg": "1800.00",
+        "maxVolumeM3": "18.00",
+        "moverCapacity": 2,
+        "isActive": true,
+        "createdAt": "2026-07-09T12:41:57.323Z",
+        "updatedAt": "2026-07-09T12:41:57.323Z"
+      },
+      {
+        "id": "91c2a6a6-ba3a-4b5f-9239-bb3da908e323",
+        "name": "26ft Box Truck",
+        "description": "Best for large homes and bulky items",
+        "basePrice": "189.00",
+        "pricePerKm": "2.85",
+        "maxWeightKg": "3500.00",
+        "maxVolumeM3": "32.00",
+        "moverCapacity": 3,
+        "isActive": true,
+        "createdAt": "2026-07-09T12:41:58.361Z",
+        "updatedAt": "2026-07-09T12:41:58.361Z"
+      }
+    ]
+  }
+}
+
+================================================================================
+VEHICLES | GET /vehicle-types
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+      "name": "Cargo Van",
+      "description": "Best for studio and one-bedroom moves",
+      "basePrice": "89.00",
+      "pricePerKm": "1.75",
+      "maxWeightKg": "800.00",
+      "maxVolumeM3": "8.00",
+      "moverCapacity": 2,
+      "isActive": true,
+      "createdAt": "2026-07-09T12:41:55.620Z",
+      "updatedAt": "2026-07-09T12:41:55.620Z"
+    },
+    {
+      "id": "74cdf6f4-8bf9-4faf-81ee-d2fcb9ac3ccf",
+      "name": "16ft Box Truck",
+      "description": "Best for two-bedroom homes",
+      "basePrice": "129.00",
+      "pricePerKm": "2.25",
+      "maxWeightKg": "1800.00",
+      "maxVolumeM3": "18.00",
+      "moverCapacity": 2,
+      "isActive": true,
+      "createdAt": "2026-07-09T12:41:57.323Z",
+      "updatedAt": "2026-07-09T12:41:57.323Z"
+    },
+    {
+      "id": "91c2a6a6-ba3a-4b5f-9239-bb3da908e323",
+      "name": "26ft Box Truck",
+      "description": "Best for large homes and bulky items",
+      "basePrice": "189.00",
+      "pricePerKm": "2.85",
+      "maxWeightKg": "3500.00",
+      "maxVolumeM3": "32.00",
+      "moverCapacity": 3,
+      "isActive": true,
+      "createdAt": "2026-07-09T12:41:58.361Z",
+      "updatedAt": "2026-07-09T12:41:58.361Z"
+    }
+  ]
+}
+
+================================================================================
+VEHICLES | GET /vehicle-types/ba78d9ec-b0b5-4160-b4ae-c350278b1fd8
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "name": "Cargo Van",
+    "description": "Best for studio and one-bedroom moves",
+    "basePrice": "89.00",
+    "pricePerKm": "1.75",
+    "maxWeightKg": "800.00",
+    "maxVolumeM3": "8.00",
+    "moverCapacity": 2,
+    "isActive": true,
+    "createdAt": "2026-07-09T12:41:55.620Z",
+    "updatedAt": "2026-07-09T12:41:55.620Z"
+  }
+}
+
+================================================================================
+ZONES | GET /zones
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "9179cbaf-3392-40ac-828c-b8f5ed9e8673",
+      "name": "Greater Toronto Area",
+      "description": "Primary launch service zone",
+      "boundary": {
+        "type": "circle",
+        "coordinates": {
+          "lat": 43.6532,
+          "lng": -79.3832,
+          "radiusKm": 45
+        }
+      },
+      "basePriceMultiplier": "1.00",
+      "baseFee": "25.00",
+      "isActive": true,
+      "isAvailable": true,
+      "createdAt": "2026-07-09T12:41:59.609Z",
+      "updatedAt": "2026-07-09T12:41:59.609Z"
+    }
+  ]
+}
+
+================================================================================
+ZONES | GET /zones/check
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "covered": true,
+    "zones": [
+      {
+        "id": "9179cbaf-3392-40ac-828c-b8f5ed9e8673",
+        "name": "Greater Toronto Area",
+        "description": "Primary launch service zone",
+        "boundary": {
+          "type": "circle",
+          "coordinates": {
+            "lat": 43.6532,
+            "lng": -79.3832,
+            "radiusKm": 45
+          }
+        },
+        "basePriceMultiplier": "1.00",
+        "baseFee": "25.00",
+        "isActive": true,
+        "isAvailable": true,
+        "createdAt": "2026-07-09T12:41:59.609Z",
+        "updatedAt": "2026-07-09T12:41:59.609Z"
+      }
+    ]
+  }
+}
+
+================================================================================
+ZONES | GET /zones/pricing
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "zone": {
+      "id": "9179cbaf-3392-40ac-828c-b8f5ed9e8673",
+      "name": "Greater Toronto Area",
+      "description": "Primary launch service zone",
+      "boundary": {
+        "type": "circle",
+        "coordinates": {
+          "lat": 43.6532,
+          "lng": -79.3832,
+          "radiusKm": 45
+        }
+      },
+      "basePriceMultiplier": "1.00",
+      "baseFee": "25.00",
+      "isActive": true,
+      "isAvailable": true,
+      "createdAt": "2026-07-09T12:41:59.609Z",
+      "updatedAt": "2026-07-09T12:41:59.609Z"
+    },
+    "distanceKm": 10,
+    "peakMultiplier": 1.35,
+    "zoneMultiplier": 1,
+    "baseFee": 25,
+    "subtotal": 50,
+    "total": 67.5
+  }
+}
+
+================================================================================
+ZONES | GET /zones/availability
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "available": true,
+    "zones": [
+      {
+        "id": "9179cbaf-3392-40ac-828c-b8f5ed9e8673",
+        "name": "Greater Toronto Area",
+        "description": "Primary launch service zone",
+        "boundary": {
+          "type": "circle",
+          "coordinates": {
+            "lat": 43.6532,
+            "lng": -79.3832,
+            "radiusKm": 45
+          }
+        },
+        "basePriceMultiplier": "1.00",
+        "baseFee": "25.00",
+        "isActive": true,
+        "isAvailable": true,
+        "createdAt": "2026-07-09T12:41:59.609Z",
+        "updatedAt": "2026-07-09T12:41:59.609Z"
+      }
+    ],
+    "peakMultiplier": 1,
+    "scheduledAt": "2026-09-15T10:00:00.000Z"
+  }
+}
+
+================================================================================
+ZONES | POST /zones (admin create)
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "507f8379-5513-4d20-94ac-5c5a9ea16b18",
+    "name": "API Test Zone 1783684889016",
+    "description": null,
+    "boundary": {
+      "type": "circle",
+      "coordinates": {
+        "lat": 43.7,
+        "lng": -79.4,
+        "radiusKm": 10
+      }
+    },
+    "basePriceMultiplier": "1.00",
+    "baseFee": "30.00",
+    "isActive": true,
+    "isAvailable": true,
+    "createdAt": "2026-07-10T07:01:49.196Z",
+    "updatedAt": "2026-07-10T07:01:49.196Z"
+  }
+}
+
+================================================================================
+ZONES | PATCH /zones/507f8379-5513-4d20-94ac-5c5a9ea16b18
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "507f8379-5513-4d20-94ac-5c5a9ea16b18",
+    "name": "API Test Zone 1783684889016",
+    "description": null,
+    "boundary": {
+      "type": "circle",
+      "coordinates": {
+        "lat": 43.7,
+        "lng": -79.4,
+        "radiusKm": 10
+      }
+    },
+    "basePriceMultiplier": "1.00",
+    "baseFee": "35.00",
+    "isActive": true,
+    "isAvailable": true,
+    "createdAt": "2026-07-10T07:01:49.196Z",
+    "updatedAt": "2026-07-10T07:01:50.454Z"
+  }
+}
+
+================================================================================
+USERS | GET /users/profile
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "email": "apitest-customer-1783684889016@example.com",
+    "roles": [
+      "customer"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:30.562Z",
+    "updatedAt": "2026-07-10T07:01:42.534Z",
+    "customerProfile": {
+      "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+      "firstName": "API",
+      "lastName": "Customer",
+      "phone": "4165550100",
+      "avatarUrl": null,
+      "address": null,
+      "preferences": {},
+      "language": "en",
+      "notificationSettings": {},
+      "privacy": {},
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:30.562Z"
+    },
+    "moverProfile": null
+  }
+}
+
+================================================================================
+USERS | PATCH /users/profile
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "email": "apitest-customer-1783684889016@example.com",
+    "roles": [
+      "customer"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:30.562Z",
+    "updatedAt": "2026-07-10T07:01:42.534Z",
+    "customerProfile": {
+      "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+      "firstName": "API",
+      "lastName": "Tester",
+      "phone": "4165550199",
+      "avatarUrl": null,
+      "address": null,
+      "preferences": {},
+      "language": "en",
+      "notificationSettings": {},
+      "privacy": {},
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:53.615Z"
+    },
+    "moverProfile": null
+  }
+}
+
+================================================================================
+USERS | PATCH /users/preferences
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "email": "apitest-customer-1783684889016@example.com",
+    "roles": [
+      "customer"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:30.562Z",
+    "updatedAt": "2026-07-10T07:01:42.534Z",
+    "customerProfile": {
+      "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+      "firstName": "API",
+      "lastName": "Tester",
+      "phone": "4165550199",
+      "avatarUrl": null,
+      "address": null,
+      "preferences": {
+        "theme": "dark",
+        "notifications": true
+      },
+      "language": "en",
+      "notificationSettings": {},
+      "privacy": {},
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:55.703Z"
+    },
+    "moverProfile": null
+  }
+}
+
+================================================================================
+USERS | PATCH /users/language
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "email": "apitest-customer-1783684889016@example.com",
+    "roles": [
+      "customer"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:30.562Z",
+    "updatedAt": "2026-07-10T07:01:42.534Z",
+    "customerProfile": {
+      "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+      "firstName": "API",
+      "lastName": "Tester",
+      "phone": "4165550199",
+      "avatarUrl": null,
+      "address": null,
+      "preferences": {
+        "theme": "dark",
+        "notifications": true
+      },
+      "language": "en",
+      "notificationSettings": {},
+      "privacy": {},
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:55.703Z"
+    },
+    "moverProfile": null
+  }
+}
+
+================================================================================
+USERS | PATCH /users/notification-settings
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "email": "apitest-customer-1783684889016@example.com",
+    "roles": [
+      "customer"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:30.562Z",
+    "updatedAt": "2026-07-10T07:01:42.534Z",
+    "customerProfile": {
+      "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+      "firstName": "API",
+      "lastName": "Tester",
+      "phone": "4165550199",
+      "avatarUrl": null,
+      "address": null,
+      "preferences": {
+        "theme": "dark",
+        "notifications": true
+      },
+      "language": "en",
+      "notificationSettings": {
+        "sms": false,
+        "push": false,
+        "email": true
+      },
+      "privacy": {},
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:02:00.005Z"
+    },
+    "moverProfile": null
+  }
+}
+
+================================================================================
+USERS | PATCH /users/privacy
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "email": "apitest-customer-1783684889016@example.com",
+    "roles": [
+      "customer"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:30.562Z",
+    "updatedAt": "2026-07-10T07:01:42.534Z",
+    "customerProfile": {
+      "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+      "firstName": "API",
+      "lastName": "Tester",
+      "phone": "4165550199",
+      "avatarUrl": null,
+      "address": null,
+      "preferences": {
+        "theme": "dark",
+        "notifications": true
+      },
+      "language": "en",
+      "notificationSettings": {
+        "sms": false,
+        "push": false,
+        "email": true
+      },
+      "privacy": {
+        "shareData": false,
+        "showProfile": true
+      },
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:02:02.072Z"
+    },
+    "moverProfile": null
+  }
+}
+
+================================================================================
+USERS | GET /users/activity
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "activities": [],
+    "message": "Activity tracking is ready for audit-log integration."
+  }
+}
+
+================================================================================
+USERS | GET /users/statistics
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "movingRequests": 0,
+    "bookings": 0
+  }
+}
+
+================================================================================
+SAVED ADDRESSES | POST /saved-addresses
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "9ff23e63-5881-4f99-b305-24e0633ac9ac",
+    "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "label": "Home",
+    "street": "123 Test Ave",
+    "city": "Toronto",
+    "province": "ON",
+    "postalCode": "M5V 1A1",
+    "country": "CA",
+    "latitude": null,
+    "longitude": null,
+    "instructions": null,
+    "isDefault": true,
+    "createdAt": "2026-07-10T07:02:06.635Z",
+    "updatedAt": "2026-07-10T07:02:07.560Z"
+  }
+}
+
+================================================================================
+SAVED ADDRESSES | GET /saved-addresses
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "9ff23e63-5881-4f99-b305-24e0633ac9ac",
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "label": "Home",
+      "street": "123 Test Ave",
+      "city": "Toronto",
+      "province": "ON",
+      "postalCode": "M5V 1A1",
+      "country": "CA",
+      "latitude": null,
+      "longitude": null,
+      "instructions": null,
+      "isDefault": true,
+      "createdAt": "2026-07-10T07:02:06.635Z",
+      "updatedAt": "2026-07-10T07:02:07.560Z"
+    }
+  ]
+}
+
+================================================================================
+SAVED ADDRESSES | GET /saved-addresses/default
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "9ff23e63-5881-4f99-b305-24e0633ac9ac",
+    "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "label": "Home",
+    "street": "123 Test Ave",
+    "city": "Toronto",
+    "province": "ON",
+    "postalCode": "M5V 1A1",
+    "country": "CA",
+    "latitude": null,
+    "longitude": null,
+    "instructions": null,
+    "isDefault": true,
+    "createdAt": "2026-07-10T07:02:06.635Z",
+    "updatedAt": "2026-07-10T07:02:07.560Z"
+  }
+}
+
+================================================================================
+SAVED ADDRESSES | PATCH /saved-addresses/9ff23e63-5881-4f99-b305-24e0633ac9ac
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "9ff23e63-5881-4f99-b305-24e0633ac9ac",
+    "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "label": "Home Updated",
+    "street": "123 Test Ave",
+    "city": "Toronto",
+    "province": "ON",
+    "postalCode": "M5V 1A1",
+    "country": "CA",
+    "latitude": null,
+    "longitude": null,
+    "instructions": null,
+    "isDefault": true,
+    "createdAt": "2026-07-10T07:02:06.635Z",
+    "updatedAt": "2026-07-10T07:02:10.364Z"
+  }
+}
+
+================================================================================
+SAVED ADDRESSES | POST /saved-addresses/default
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "9ff23e63-5881-4f99-b305-24e0633ac9ac",
+    "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "label": "Home Updated",
+    "street": "123 Test Ave",
+    "city": "Toronto",
+    "province": "ON",
+    "postalCode": "M5V 1A1",
+    "country": "CA",
+    "latitude": null,
+    "longitude": null,
+    "instructions": null,
+    "isDefault": true,
+    "createdAt": "2026-07-10T07:02:06.635Z",
+    "updatedAt": "2026-07-10T07:02:12.031Z"
+  }
+}
+
+================================================================================
+BOOKINGS | POST /bookings/estimate
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "distanceKm": 5.2,
+    "vehicleType": {
+      "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+      "name": "Cargo Van",
+      "description": "Best for studio and one-bedroom moves",
+      "basePrice": "89.00",
+      "pricePerKm": "1.75",
+      "maxWeightKg": "800.00",
+      "maxVolumeM3": "8.00",
+      "moverCapacity": 2,
+      "isActive": true,
+      "createdAt": "2026-07-09T12:41:55.620Z",
+      "updatedAt": "2026-07-09T12:41:55.620Z"
+    },
+    "vehiclePrice": 98.1,
+    "zonePricing": null,
+    "total": 98.1
+  }
+}
+
+================================================================================
+BOOKINGS | POST /bookings/preview
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "scheduledDate": "2026-09-15T10:00:00.000Z",
+    "pickupAddress": {
+      "street": "100 King St W",
+      "city": "Toronto",
+      "province": "ON",
+      "postalCode": "M5H 1A1",
+      "country": "CA"
+    },
+    "destinationAddress": {
+      "street": "200 Bay St",
+      "city": "Toronto",
+      "province": "ON",
+      "postalCode": "M5J 2J4",
+      "country": "CA"
+    },
+    "items": [
+      {
+        "name": "Boxes",
+        "quantity": 5,
+        "weightKg": 20,
+        "volumeM3": 1.5
+      }
+    ],
+    "pricing": {
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "description": "Best for studio and one-bedroom moves",
+        "basePrice": "89.00",
+        "pricePerKm": "1.75",
+        "maxWeightKg": "800.00",
+        "maxVolumeM3": "8.00",
+        "moverCapacity": 2,
+        "isActive": true,
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z"
+      },
+      "vehiclePrice": 98.1,
+      "zonePricing": null,
+      "total": 98.1
+    }
+  }
+}
+
+================================================================================
+BOOKINGS | POST /bookings (create draft)
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "scheduledDate": "2026-09-15T10:00:00.000Z",
+    "price": "98.10",
+    "estimatedPrice": "98.10",
+    "status": "open",
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "pricingBreakdown": {
+      "total": 98.1,
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "isActive": true,
+        "basePrice": "89.00",
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z",
+        "pricePerKm": "1.75",
+        "description": "Best for studio and one-bedroom moves",
+        "maxVolumeM3": "8.00",
+        "maxWeightKg": "800.00",
+        "moverCapacity": 2
+      },
+      "zonePricing": null,
+      "vehiclePrice": 98.1
+    },
+    "notes": "API test booking",
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": null,
+    "request": null,
+    "moverId": null,
+    "mover": null,
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "customer": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+        "address": null,
+        "pref
+... [truncated]
+
+================================================================================
+BOOKINGS | GET /bookings
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "d0863484-4648-4598-9622-279ccc1cbf38",
+      "scheduledDate": "2026-09-15T10:00:00.000Z",
+      "price": "98.10",
+      "estimatedPrice": "98.10",
+      "status": "open",
+      "pickupAddress": {
+        "city": "Toronto",
+        "street": "100 King St W",
+        "country": "CA",
+        "province": "ON",
+        "postalCode": "M5H 1A1"
+      },
+      "destinationAddress": {
+        "city": "Toronto",
+        "street": "200 Bay St",
+        "country": "CA",
+        "province": "ON",
+        "postalCode": "M5J 2J4"
+      },
+      "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+      "pricingBreakdown": {
+        "total": 98.1,
+        "distanceKm": 5.2,
+        "vehicleType": {
+          "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+          "name": "Cargo Van",
+          "isActive": true,
+          "basePrice": "89.00",
+          "createdAt": "2026-07-09T12:41:55.620Z",
+          "updatedAt": "2026-07-09T12:41:55.620Z",
+          "pricePerKm": "1.75",
+          "description": "Best for studio and one-bedroom moves",
+          "maxVolumeM3": "8.00",
+          "maxWeightKg": "800.00",
+          "moverCapacity": 2
+        },
+        "zonePricing": null,
+        "vehiclePrice": 98.1
+      },
+      "notes": "API test booking",
+      "shareToken": null,
+      "currentLatitude": null,
+      "currentLongitude": null,
+      "requestId": null,
+      "request": null,
+      "moverId": null,
+      "mover": null,
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "quoteId": null,
+      "quote": null,
+      "items": [
+        {
+          "id": "a2f1454b-71fc-400f-8f3c-8f33227a0af0",
+          "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+          "name": "Boxes",
+          "quantity": 5,
+          "weightKg": "20.00",
+          "volumeM3": "1.50",
+          "description": null,
+          "photoUrl": null,
+          "createdAt": "2026-07-10T07:02:16.435Z",
+          "updatedAt": "2026-07-10T07:02
+... [truncated]
+
+================================================================================
+BOOKINGS | GET /bookings/d0863484-4648-4598-9622-279ccc1cbf38
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "scheduledDate": "2026-09-15T10:00:00.000Z",
+    "price": "98.10",
+    "estimatedPrice": "98.10",
+    "status": "open",
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "pricingBreakdown": {
+      "total": 98.1,
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "isActive": true,
+        "basePrice": "89.00",
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z",
+        "pricePerKm": "1.75",
+        "description": "Best for studio and one-bedroom moves",
+        "maxVolumeM3": "8.00",
+        "maxWeightKg": "800.00",
+        "moverCapacity": 2
+      },
+      "zonePricing": null,
+      "vehiclePrice": 98.1
+    },
+    "notes": "API test booking",
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": null,
+    "request": null,
+    "moverId": null,
+    "mover": null,
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "customer": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+        "address": null,
+        "pref
+... [truncated]
+
+================================================================================
+BOOKINGS | PATCH /bookings/d0863484-4648-4598-9622-279ccc1cbf38
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "scheduledDate": "2026-09-15T10:00:00.000Z",
+    "price": "98.10",
+    "estimatedPrice": "98.10",
+    "status": "open",
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "pricingBreakdown": {
+      "total": 98.1,
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "isActive": true,
+        "basePrice": "89.00",
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z",
+        "pricePerKm": "1.75",
+        "description": "Best for studio and one-bedroom moves",
+        "maxVolumeM3": "8.00",
+        "maxWeightKg": "800.00",
+        "moverCapacity": 2
+      },
+      "zonePricing": null,
+      "vehiclePrice": 98.1
+    },
+    "notes": "Updated via API test",
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": null,
+    "request": null,
+    "moverId": null,
+    "mover": null,
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "customer": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+        "address": null,
+        "
+... [truncated]
+
+================================================================================
+BOOKINGS | GET /bookings/d0863484-4648-4598-9622-279ccc1cbf38/status
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "status": "open",
+    "scheduledDate": "2026-09-15T10:00:00.000Z",
+    "updatedAt": "2026-07-10T07:02:24.874Z"
+  }
+}
+
+================================================================================
+BOOKINGS | GET /bookings/d0863484-4648-4598-9622-279ccc1cbf38/timeline
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "statusHistory": [
+      {
+        "id": "8d7c5e8e-bc5b-4f02-9db4-40320b098e3c",
+        "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+        "status": "open",
+        "note": "Booking created and opened for movers",
+        "updatedById": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "createdAt": "2026-07-10T07:02:16.990Z"
+      }
+    ],
+    "trackingEvents": []
+  }
+}
+
+================================================================================
+BOOKINGS | GET /bookings/d0863484-4648-4598-9622-279ccc1cbf38/location
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "latitude": null,
+    "longitude": null,
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "updatedAt": "2026-07-10T07:02:24.874Z"
+  }
+}
+
+================================================================================
+BOOKINGS | GET /bookings/d0863484-4648-4598-9622-279ccc1cbf38/tracking
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "status": "open",
+    "currentLocation": {
+      "latitude": null,
+      "longitude": null
+    },
+    "events": []
+  }
+}
+
+================================================================================
+BOOKINGS | POST /bookings/d0863484-4648-4598-9622-279ccc1cbf38/share
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "shareToken": "5f1516186213a61baf2058865be8ceba",
+    "shareUrl": "/bookings/d0863484-4648-4598-9622-279ccc1cbf38/tracking?token=5f1516186213a61baf2058865be8ceba",
+    "share": {
+      "id": "fbd157d6-ccbb-4225-bcd8-edba7e638b4d",
+      "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+      "shareToken": "5f1516186213a61baf2058865be8ceba",
+      "sharedWithEmail": "friend@example.com",
+      "expiresAt": "2026-07-11T12:02:29.864Z",
+      "createdById": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:02:32.539Z"
+    }
+  }
+}
+
+================================================================================
+BOOKINGS | GET /bookings/d0863484-4648-4598-9622-279ccc1cbf38/items
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "a2f1454b-71fc-400f-8f3c-8f33227a0af0",
+      "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+      "name": "Boxes",
+      "quantity": 5,
+      "weightKg": "20.00",
+      "volumeM3": "1.50",
+      "description": null,
+      "photoUrl": null,
+      "createdAt": "2026-07-10T07:02:16.435Z",
+      "updatedAt": "2026-07-10T07:02:16.435Z"
+    }
+  ]
+}
+
+================================================================================
+BOOKINGS | POST /bookings/d0863484-4648-4598-9622-279ccc1cbf38/items
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "aee6f79b-fb9b-4dca-891a-fde17842e0b2",
+    "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "name": "Desk",
+    "quantity": 1,
+    "weightKg": 30,
+    "volumeM3": null,
+    "description": null,
+    "photoUrl": null,
+    "createdAt": "2026-07-10T07:02:35.279Z",
+    "updatedAt": "2026-07-10T07:02:35.279Z"
+  }
+}
+
+================================================================================
+BOOKINGS | PATCH /bookings/d0863484-4648-4598-9622-279ccc1cbf38/items/aee6f79b-fb9b-4dca-891a-fde17842e0b2
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "aee6f79b-fb9b-4dca-891a-fde17842e0b2",
+    "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "name": "Desk",
+    "quantity": 2,
+    "weightKg": "30.00",
+    "volumeM3": null,
+    "description": null,
+    "photoUrl": null,
+    "createdAt": "2026-07-10T07:02:35.279Z",
+    "updatedAt": "2026-07-10T07:02:37.565Z"
+  }
+}
+
+================================================================================
+BOOKINGS | POST /bookings/d0863484-4648-4598-9622-279ccc1cbf38/items/photo
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "aee6f79b-fb9b-4dca-891a-fde17842e0b2",
+    "bookingId": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "name": "Desk",
+    "quantity": 2,
+    "weightKg": "30.00",
+    "volumeM3": null,
+    "description": null,
+    "photoUrl": "https://example.com/photo.jpg",
+    "createdAt": "2026-07-10T07:02:35.279Z",
+    "updatedAt": "2026-07-10T07:02:39.603Z"
+  }
+}
+
+================================================================================
+BOOKINGS | POST /bookings/d0863484-4648-4598-9622-279ccc1cbf38/reschedule
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "d0863484-4648-4598-9622-279ccc1cbf38",
+    "scheduledDate": "2026-09-20T14:00:00.000Z",
+    "price": "98.10",
+    "estimatedPrice": "98.10",
+    "status": "open",
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "pricingBreakdown": {
+      "total": 98.1,
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "isActive": true,
+        "basePrice": "89.00",
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z",
+        "pricePerKm": "1.75",
+        "description": "Best for studio and one-bedroom moves",
+        "maxVolumeM3": "8.00",
+        "maxWeightKg": "800.00",
+        "moverCapacity": 2
+      },
+      "zonePricing": null,
+      "vehiclePrice": 98.1
+    },
+    "notes": "Updated via API test",
+    "shareToken": "5f1516186213a61baf2058865be8ceba",
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": null,
+    "request": null,
+    "moverId": null,
+    "mover": null,
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "customer": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+    
+... [truncated]
+
+================================================================================
+BOOKINGS | POST /bookings/d0863484-4648-4598-9622-279ccc1cbf38/duplicate
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "a6095c79-57fd-43dc-abf4-9d6a0f3ade39",
+    "scheduledDate": "2026-09-20T14:00:00.000Z",
+    "price": "98.10",
+    "estimatedPrice": "98.10",
+    "status": "draft",
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "pricingBreakdown": {
+      "total": 98.1,
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "isActive": true,
+        "basePrice": "89.00",
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z",
+        "pricePerKm": "1.75",
+        "description": "Best for studio and one-bedroom moves",
+        "maxVolumeM3": "8.00",
+        "maxWeightKg": "800.00",
+        "moverCapacity": 2
+      },
+      "zonePricing": null,
+      "vehiclePrice": 98.1
+    },
+    "notes": "Updated via API test",
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": null,
+    "request": null,
+    "moverId": null,
+    "mover": null,
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "customer": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+        "address": null,
+        
+... [truncated]
+
+================================================================================
+BOOKINGS | DELETE /bookings/a6095c79-57fd-43dc-abf4-9d6a0f3ade39 (draft)
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "Booking deleted"
+  }
+}
+
+================================================================================
+BOOKINGS | POST /bookings/d0863484-4648-4598-9622-279ccc1cbf38/rebook
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "30504baa-4b40-44c5-bcac-8f34b8fa3113",
+    "scheduledDate": "2026-07-17T12:02:52.299Z",
+    "price": "98.10",
+    "estimatedPrice": "98.10",
+    "status": "open",
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "pricingBreakdown": {
+      "total": 98.1,
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "isActive": true,
+        "basePrice": "89.00",
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z",
+        "pricePerKm": "1.75",
+        "description": "Best for studio and one-bedroom moves",
+        "maxVolumeM3": "8.00",
+        "maxWeightKg": "800.00",
+        "moverCapacity": 2
+      },
+      "zonePricing": null,
+      "vehiclePrice": 98.1
+    },
+    "notes": "Updated via API test",
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": null,
+    "request": null,
+    "moverId": null,
+    "mover": null,
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "customer": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+        "address": null,
+        "
+... [truncated]
+
+================================================================================
+MOVERS | POST /movers/profile
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+    "businessName": "API Test Movers",
+    "phone": "4165550200",
+    "bio": "Professional movers",
+    "isVerified": false,
+    "avatarUrl": null,
+    "serviceAreas": [
+      "Toronto"
+    ],
+    "documents": [
+      {
+        "type": "license",
+        "url": "https://example.com/license.pdf",
+        "status": "pending"
+      }
+    ],
+    "availability": null,
+    "userId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "createdAt": "2026-07-10T07:01:34.586Z",
+    "updatedAt": "2026-07-10T07:02:57.559Z"
+  }
+}
+
+================================================================================
+MOVERS | PUT /movers/profile
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+    "businessName": "API Test Movers Updated",
+    "phone": null,
+    "bio": null,
+    "isVerified": false,
+    "avatarUrl": null,
+    "serviceAreas": [
+      "Toronto",
+      "Mississauga"
+    ],
+    "documents": [
+      {
+        "url": "https://example.com/license.pdf",
+        "type": "license",
+        "status": "pending"
+      }
+    ],
+    "availability": null,
+    "userId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "createdAt": "2026-07-10T07:01:34.586Z",
+    "updatedAt": "2026-07-10T07:03:00.008Z"
+  }
+}
+
+================================================================================
+MOVERS | GET /movers/profile
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+    "businessName": "API Test Movers Updated",
+    "phone": "4165550200",
+    "bio": "Professional movers",
+    "isVerified": false,
+    "avatarUrl": null,
+    "serviceAreas": [
+      "Toronto",
+      "Mississauga"
+    ],
+    "documents": [
+      {
+        "url": "https://example.com/license.pdf",
+        "type": "license",
+        "status": "pending"
+      }
+    ],
+    "availability": null,
+    "userId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "user": {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:44.417Z"
+    },
+    "createdAt": "2026-07-10T07:01:34.586Z",
+    "updatedAt": "2026-07-10T07:03:00.008Z"
+  }
+}
+
+================================================================================
+ADMIN | PUT /admin/users/ce828b5b-d268-412d-b5e9-936a95faaecc/verify
+STATUS: 200 ✓ PASS
+NOTE: Verify mover for quoting
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "email": "apitest-mover-1783684889016@example.com",
+    "roles": [
+      "mover"
+    ],
+    "isActive": true,
+    "isVerified": true,
+    "createdAt": "2026-07-10T07:01:34.586Z",
+    "updatedAt": "2026-07-10T07:01:44.417Z",
+    "customerProfile": null,
+    "moverProfile": {
+      "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+      "businessName": "API Test Movers Updated",
+      "phone": "4165550200",
+      "bio": "Professional movers",
+      "isVerified": false,
+      "avatarUrl": null,
+      "serviceAreas": [
+        "Toronto",
+        "Mississauga"
+      ],
+      "documents": [
+        {
+          "url": "https://example.com/license.pdf",
+          "type": "license",
+          "status": "pending"
+        }
+      ],
+      "availability": null,
+      "userId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:03:00.008Z"
+    }
+  }
+}
+
+================================================================================
+CUSTOMERS | POST /customers/requests
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "609ada42-d986-4907-8873-77487e0af3a0",
+    "pickupAddress": "100 Start St, Toronto",
+    "destinationAddress": "200 End Ave, Toronto",
+    "movingDate": "2026-09-15T00:00:00.000Z",
+    "items": [
+      {
+        "name": "Boxes",
+        "quantity": 10
+      }
+    ],
+    "additionalNotes": "API test request",
+    "status": "pending",
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "createdAt": "2026-07-10T07:03:08.458Z",
+    "updatedAt": "2026-07-10T07:03:08.458Z"
+  }
+}
+
+================================================================================
+CUSTOMERS | GET /customers/requests
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "609ada42-d986-4907-8873-77487e0af3a0",
+      "pickupAddress": "100 Start St, Toronto",
+      "destinationAddress": "200 End Ave, Toronto",
+      "movingDate": "2026-09-15T00:00:00.000Z",
+      "items": [
+        {
+          "name": "Boxes",
+          "quantity": 10
+        }
+      ],
+      "additionalNotes": "API test request",
+      "status": "pending",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "quotes": [],
+      "createdAt": "2026-07-10T07:03:08.458Z",
+      "updatedAt": "2026-07-10T07:03:08.458Z"
+    }
+  ]
+}
+
+================================================================================
+CUSTOMERS | GET /customers/requests/609ada42-d986-4907-8873-77487e0af3a0
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "609ada42-d986-4907-8873-77487e0af3a0",
+    "pickupAddress": "100 Start St, Toronto",
+    "destinationAddress": "200 End Ave, Toronto",
+    "movingDate": "2026-09-15T00:00:00.000Z",
+    "items": [
+      {
+        "name": "Boxes",
+        "quantity": 10
+      }
+    ],
+    "additionalNotes": "API test request",
+    "status": "pending",
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "quotes": [],
+    "createdAt": "2026-07-10T07:03:08.458Z",
+    "updatedAt": "2026-07-10T07:03:08.458Z"
+  }
+}
+
+================================================================================
+MOVERS | GET /movers/available-requests
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "609ada42-d986-4907-8873-77487e0af3a0",
+      "pickupAddress": "100 Start St, Toronto",
+      "destinationAddress": "200 End Ave, Toronto",
+      "movingDate": "2026-09-15T00:00:00.000Z",
+      "items": [
+        {
+          "name": "Boxes",
+          "quantity": 10
+        }
+      ],
+      "additionalNotes": "API test request",
+      "status": "pending",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "customer": {
+        "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "email": "apitest-customer-1783684889016@example.com",
+        "roles": [
+          "customer"
+        ],
+        "isActive": true,
+        "isVerified": true,
+        "createdAt": "2026-07-10T07:01:30.562Z",
+        "updatedAt": "2026-07-10T07:01:42.534Z",
+        "customerProfile": {
+          "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+          "firstName": "API",
+          "lastName": "Tester",
+          "phone": "4165550199",
+          "avatarUrl": null,
+          "address": null,
+          "preferences": {
+            "theme": "dark",
+            "notifications": true
+          },
+          "language": "en",
+          "notificationSettings": {
+            "sms": false,
+            "push": false,
+            "email": true
+          },
+          "privacy": {
+            "shareData": false,
+            "showProfile": true
+          },
+          "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+          "createdAt": "2026-07-10T07:01:30.562Z",
+          "updatedAt": "2026-07-10T07:02:02.072Z"
+        }
+      },
+      "quotes": [],
+      "createdAt": "2026-07-10T07:03:08.458Z",
+      "updatedAt": "2026-07-10T07:03:08.458Z"
+    }
+  ]
+}
+
+================================================================================
+MOVERS | POST /movers/requests/609ada42-d986-4907-8873-77487e0af3a0/quote
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "b2e1887a-f322-4e86-92db-716a102ae73f",
+    "price": 850,
+    "estimatedHours": 6,
+    "notes": "Full service move",
+    "status": "pending",
+    "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+    "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "createdAt": "2026-07-10T07:03:13.714Z",
+    "updatedAt": "2026-07-10T07:03:13.714Z"
+  }
+}
+
+================================================================================
+CUSTOMERS | POST /customers/requests/.../counteroffer
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "2ddbe32c-7c95-4b22-96ae-fa72a8b2a548",
+    "quoteId": "b2e1887a-f322-4e86-92db-716a102ae73f",
+    "authorId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "authorRole": "customer",
+    "price": 780,
+    "notes": "Customer counter",
+    "status": "pending",
+    "createdAt": "2026-07-10T07:03:19.672Z"
+  }
+}
+
+================================================================================
+MOVERS | POST /movers/quotes/b2e1887a-f322-4e86-92db-716a102ae73f/counteroffer/respond
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "quote": {
+      "id": "b2e1887a-f322-4e86-92db-716a102ae73f",
+      "price": "780.00",
+      "estimatedHours": 6,
+      "notes": "Full service move",
+      "status": "pending",
+      "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+      "request": {
+        "id": "609ada42-d986-4907-8873-77487e0af3a0",
+        "pickupAddress": "100 Start St, Toronto",
+        "destinationAddress": "200 End Ave, Toronto",
+        "movingDate": "2026-09-15T00:00:00.000Z",
+        "items": [
+          {
+            "name": "Boxes",
+            "quantity": 10
+          }
+        ],
+        "additionalNotes": "API test request",
+        "status": "active",
+        "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "createdAt": "2026-07-10T07:03:08.458Z",
+        "updatedAt": "2026-07-10T07:03:14.444Z"
+      },
+      "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "createdAt": "2026-07-10T07:03:13.714Z",
+      "updatedAt": "2026-07-10T07:03:29.255Z"
+    },
+    "counteroffer": {
+      "id": "2ddbe32c-7c95-4b22-96ae-fa72a8b2a548",
+      "quoteId": "b2e1887a-f322-4e86-92db-716a102ae73f",
+      "authorId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "authorRole": "customer",
+      "price": "780.00",
+      "notes": "Customer counter",
+      "status": "accepted",
+      "createdAt": "2026-07-10T07:03:19.672Z"
+    }
+  }
+}
+
+================================================================================
+CUSTOMERS | POST /customers/requests/.../accept
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "scheduledDate": "2026-09-15T00:00:00.000Z",
+    "price": "780.00",
+    "estimatedPrice": "780.00",
+    "status": "confirmed",
+    "pickupAddress": {
+      "street": "100 Start St, Toronto"
+    },
+    "destinationAddress": {
+      "street": "200 End Ave, Toronto"
+    },
+    "vehicleTypeId": null,
+    "pricingBreakdown": null,
+    "notes": null,
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+    "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "quoteId": "b2e1887a-f322-4e86-92db-716a102ae73f",
+    "cancellationReason": null,
+    "createdAt": "2026-07-10T07:03:31.787Z",
+    "updatedAt": "2026-07-10T07:03:31.787Z"
+  }
+}
+
+================================================================================
+CUSTOMERS | GET /customers/bookings
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+      "scheduledDate": "2026-09-15T00:00:00.000Z",
+      "price": "780.00",
+      "estimatedPrice": "780.00",
+      "status": "confirmed",
+      "pickupAddress": {
+        "street": "100 Start St, Toronto"
+      },
+      "destinationAddress": {
+        "street": "200 End Ave, Toronto"
+      },
+      "vehicleTypeId": null,
+      "pricingBreakdown": null,
+      "notes": null,
+      "shareToken": null,
+      "currentLatitude": null,
+      "currentLongitude": null,
+      "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+      "request": {
+        "id": "609ada42-d986-4907-8873-77487e0af3a0",
+        "pickupAddress": "100 Start St, Toronto",
+        "destinationAddress": "200 End Ave, Toronto",
+        "movingDate": "2026-09-15T00:00:00.000Z",
+        "items": [
+          {
+            "name": "Boxes",
+            "quantity": 10
+          }
+        ],
+        "additionalNotes": "API test request",
+        "status": "booked",
+        "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "createdAt": "2026-07-10T07:03:08.458Z",
+        "updatedAt": "2026-07-10T07:03:31.787Z"
+      },
+      "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "mover": {
+        "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+        "email": "apitest-mover-1783684889016@example.com",
+        "roles": [
+          "mover"
+        ],
+        "isActive": true,
+        "isVerified": true,
+        "createdAt": "2026-07-10T07:01:34.586Z",
+        "updatedAt": "2026-07-10T07:01:44.417Z",
+        "moverProfile": {
+          "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+          "businessName": "API Test Movers Updated",
+          "phone": "4165550200",
+          "bio": "Professional movers",
+          "isVerified": true,
+          "avatarUrl": null,
+          "serviceAreas": [
+            "Toronto",
+            "Mississauga"
+          ],
+          "documents": [
+            {
+              "url":
+... [truncated]
+
+================================================================================
+CUSTOMERS | GET /customers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "scheduledDate": "2026-09-15T00:00:00.000Z",
+    "price": "780.00",
+    "estimatedPrice": "780.00",
+    "status": "confirmed",
+    "pickupAddress": {
+      "street": "100 Start St, Toronto"
+    },
+    "destinationAddress": {
+      "street": "200 End Ave, Toronto"
+    },
+    "vehicleTypeId": null,
+    "pricingBreakdown": null,
+    "notes": null,
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+    "request": {
+      "id": "609ada42-d986-4907-8873-77487e0af3a0",
+      "pickupAddress": "100 Start St, Toronto",
+      "destinationAddress": "200 End Ave, Toronto",
+      "movingDate": "2026-09-15T00:00:00.000Z",
+      "items": [
+        {
+          "name": "Boxes",
+          "quantity": 10
+        }
+      ],
+      "additionalNotes": "API test request",
+      "status": "booked",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:03:08.458Z",
+      "updatedAt": "2026-07-10T07:03:31.787Z"
+    },
+    "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "mover": {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:44.417Z",
+      "moverProfile": {
+        "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+        "businessName": "API Test Movers Updated",
+        "phone": "4165550200",
+        "bio": "Professional movers",
+        "isVerified": true,
+        "avatarUrl": null,
+        "serviceAreas": [
+          "Toronto",
+          "Mississauga"
+        ],
+        "documents": [
+          {
+            "url": "https://example.com/license.pdf",
+            "type": "license",
+            "status": "verified"
+          }
+        ],
+   
+... [truncated]
+
+================================================================================
+MOVERS | GET /movers/bookings
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+      "scheduledDate": "2026-09-15T00:00:00.000Z",
+      "price": "780.00",
+      "estimatedPrice": "780.00",
+      "status": "confirmed",
+      "pickupAddress": {
+        "street": "100 Start St, Toronto"
+      },
+      "destinationAddress": {
+        "street": "200 End Ave, Toronto"
+      },
+      "vehicleTypeId": null,
+      "pricingBreakdown": null,
+      "notes": null,
+      "shareToken": null,
+      "currentLatitude": null,
+      "currentLongitude": null,
+      "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+      "request": {
+        "id": "609ada42-d986-4907-8873-77487e0af3a0",
+        "pickupAddress": "100 Start St, Toronto",
+        "destinationAddress": "200 End Ave, Toronto",
+        "movingDate": "2026-09-15T00:00:00.000Z",
+        "items": [
+          {
+            "name": "Boxes",
+            "quantity": 10
+          }
+        ],
+        "additionalNotes": "API test request",
+        "status": "booked",
+        "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "createdAt": "2026-07-10T07:03:08.458Z",
+        "updatedAt": "2026-07-10T07:03:31.787Z"
+      },
+      "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "customer": {
+        "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "email": "apitest-customer-1783684889016@example.com",
+        "roles": [
+          "customer"
+        ],
+        "isActive": true,
+        "isVerified": true,
+        "createdAt": "2026-07-10T07:01:30.562Z",
+        "updatedAt": "2026-07-10T07:01:42.534Z",
+        "customerProfile": {
+          "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+          "firstName": "API",
+          "lastName": "Tester",
+          "phone": "4165550199",
+          "avatarUrl": null,
+          "address": null,
+          "preferences": {
+            "theme": "dark",
+            "notifications": true
+          },
+        
+... [truncated]
+
+================================================================================
+MOVERS | POST /movers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/accept
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "scheduledDate": "2026-09-15T00:00:00.000Z",
+    "price": "780.00",
+    "estimatedPrice": "780.00",
+    "status": "in_progress",
+    "pickupAddress": {
+      "street": "100 Start St, Toronto"
+    },
+    "destinationAddress": {
+      "street": "200 End Ave, Toronto"
+    },
+    "vehicleTypeId": null,
+    "pricingBreakdown": null,
+    "notes": null,
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+    "request": {
+      "id": "609ada42-d986-4907-8873-77487e0af3a0",
+      "pickupAddress": "100 Start St, Toronto",
+      "destinationAddress": "200 End Ave, Toronto",
+      "movingDate": "2026-09-15T00:00:00.000Z",
+      "items": [
+        {
+          "name": "Boxes",
+          "quantity": 10
+        }
+      ],
+      "additionalNotes": "API test request",
+      "status": "booked",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:03:08.458Z",
+      "updatedAt": "2026-07-10T07:03:31.787Z"
+    },
+    "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "mover": {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:44.417Z",
+      "moverProfile": {
+        "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+        "businessName": "API Test Movers Updated",
+        "phone": "4165550200",
+        "bio": "Professional movers",
+        "isVerified": true,
+        "avatarUrl": null,
+        "serviceAreas": [
+          "Toronto",
+          "Mississauga"
+        ],
+        "documents": [
+          {
+            "url": "https://example.com/license.pdf",
+            "type": "license",
+            "status": "verified"
+          }
+        ],
+ 
+... [truncated]
+
+================================================================================
+MOVERS | POST /movers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/tracking
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "ba470668-476c-40f1-b099-dc42b991c4a8",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "type": "location_update",
+    "status": "in_transit",
+    "note": "En route",
+    "latitude": 43.65,
+    "longitude": -79.38,
+    "createdById": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "createdAt": "2026-07-10T07:03:46.775Z"
+  }
+}
+
+================================================================================
+MOVERS | GET /movers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/tracking
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "ba470668-476c-40f1-b099-dc42b991c4a8",
+      "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+      "type": "location_update",
+      "status": "in_transit",
+      "note": "En route",
+      "latitude": "43.6500000",
+      "longitude": "-79.3800000",
+      "createdById": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "createdBy": {
+        "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+        "email": "apitest-mover-1783684889016@example.com",
+        "roles": [
+          "mover"
+        ],
+        "isActive": true,
+        "isVerified": true,
+        "createdAt": "2026-07-10T07:01:34.586Z",
+        "updatedAt": "2026-07-10T07:01:44.417Z"
+      },
+      "createdAt": "2026-07-10T07:03:46.775Z"
+    }
+  ]
+}
+
+================================================================================
+MOVERS | POST /movers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/update-status (completed)
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "scheduledDate": "2026-09-15T00:00:00.000Z",
+    "price": "780.00",
+    "estimatedPrice": "780.00",
+    "status": "completed",
+    "pickupAddress": {
+      "street": "100 Start St, Toronto"
+    },
+    "destinationAddress": {
+      "street": "200 End Ave, Toronto"
+    },
+    "vehicleTypeId": null,
+    "pricingBreakdown": null,
+    "notes": null,
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+    "request": {
+      "id": "609ada42-d986-4907-8873-77487e0af3a0",
+      "pickupAddress": "100 Start St, Toronto",
+      "destinationAddress": "200 End Ave, Toronto",
+      "movingDate": "2026-09-15T00:00:00.000Z",
+      "items": [
+        {
+          "name": "Boxes",
+          "quantity": 10
+        }
+      ],
+      "additionalNotes": "API test request",
+      "status": "booked",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:03:08.458Z",
+      "updatedAt": "2026-07-10T07:03:31.787Z"
+    },
+    "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "mover": {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:44.417Z",
+      "moverProfile": {
+        "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+        "businessName": "API Test Movers Updated",
+        "phone": "4165550200",
+        "bio": "Professional movers",
+        "isVerified": true,
+        "avatarUrl": null,
+        "serviceAreas": [
+          "Toronto",
+          "Mississauga"
+        ],
+        "documents": [
+          {
+            "url": "https://example.com/license.pdf",
+            "type": "license",
+            "status": "verified"
+          }
+        ],
+   
+... [truncated]
+
+================================================================================
+CUSTOMERS | POST /customers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/payment
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "a571a073-0ce3-4d95-bd99-363bc139563f",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "payerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "amount": 780,
+    "platformCommission": "78.00",
+    "status": "completed",
+    "transactionRef": "TXN-1783684889016",
+    "invoiceNumber": "INV-1783685033262",
+    "createdAt": "2026-07-10T07:03:53.904Z",
+    "updatedAt": "2026-07-10T07:03:53.904Z"
+  }
+}
+
+================================================================================
+CUSTOMERS | POST /customers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/review
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "668dd8df-c5fc-4b73-8e98-6e706b654938",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "rating": 5,
+    "comment": "Great service from API test",
+    "isReported": false,
+    "isVisible": true,
+    "createdAt": "2026-07-10T07:03:56.710Z"
+  }
+}
+
+================================================================================
+CUSTOMERS | POST /customers/bookings/df653e25-d9f6-49f1-bc6f-70cd46138330/cancel
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "df653e25-d9f6-49f1-bc6f-70cd46138330",
+    "scheduledDate": "2026-10-01T00:00:00.000Z",
+    "price": "400.00",
+    "estimatedPrice": "400.00",
+    "status": "cancelled",
+    "pickupAddress": {
+      "street": "50 Cancel St"
+    },
+    "destinationAddress": {
+      "street": "60 Cancel Ave"
+    },
+    "vehicleTypeId": null,
+    "pricingBreakdown": null,
+    "notes": null,
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": "d68d2890-6de8-42d8-871a-923e63aebfbf",
+    "request": {
+      "id": "d68d2890-6de8-42d8-871a-923e63aebfbf",
+      "pickupAddress": "50 Cancel St",
+      "destinationAddress": "60 Cancel Ave",
+      "movingDate": "2026-10-01T00:00:00.000Z",
+      "items": [
+        {
+          "name": "Chair",
+          "quantity": 2
+        }
+      ],
+      "additionalNotes": null,
+      "status": "booked",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "createdAt": "2026-07-10T07:03:58.504Z",
+      "updatedAt": "2026-07-10T07:04:03.757Z"
+    },
+    "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "mover": {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:44.417Z",
+      "moverProfile": {
+        "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+        "businessName": "API Test Movers Updated",
+        "phone": "4165550200",
+        "bio": "Professional movers",
+        "isVerified": true,
+        "avatarUrl": null,
+        "serviceAreas": [
+          "Toronto",
+          "Mississauga"
+        ],
+        "documents": [
+          {
+            "url": "https://example.com/license.pdf",
+            "type": "license",
+            "status": "verified"
+          }
+        ],
+        "availability": null,
+        "userId": "c
+... [truncated]
+
+================================================================================
+BOOKINGS | POST /bookings/0c803c87-19a1-4ab1-b4a4-e52c2850d02d/cancel
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "0c803c87-19a1-4ab1-b4a4-e52c2850d02d",
+    "scheduledDate": "2026-09-15T10:00:00.000Z",
+    "price": "98.10",
+    "estimatedPrice": "98.10",
+    "status": "cancelled",
+    "pickupAddress": {
+      "city": "Toronto",
+      "street": "100 King St W",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5H 1A1"
+    },
+    "destinationAddress": {
+      "city": "Toronto",
+      "street": "200 Bay St",
+      "country": "CA",
+      "province": "ON",
+      "postalCode": "M5J 2J4"
+    },
+    "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+    "pricingBreakdown": {
+      "total": 98.1,
+      "distanceKm": 5.2,
+      "vehicleType": {
+        "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+        "name": "Cargo Van",
+        "isActive": true,
+        "basePrice": "89.00",
+        "createdAt": "2026-07-09T12:41:55.620Z",
+        "updatedAt": "2026-07-09T12:41:55.620Z",
+        "pricePerKm": "1.75",
+        "description": "Best for studio and one-bedroom moves",
+        "maxVolumeM3": "8.00",
+        "maxWeightKg": "800.00",
+        "moverCapacity": 2
+      },
+      "zonePricing": null,
+      "vehiclePrice": 98.1
+    },
+    "notes": "Booking to cancel via /bookings endpoint",
+    "shareToken": null,
+    "currentLatitude": null,
+    "currentLongitude": null,
+    "requestId": null,
+    "request": null,
+    "moverId": null,
+    "mover": null,
+    "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "customer": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+        "
+... [truncated]
+
+================================================================================
+CUSTOMERS | POST /customers/bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/dispute
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "2bda09ae-c057-4c2d-afa6-dbfa47ee854d",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "raisedById": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "reason": "Minor damage to item during API test",
+    "status": "open",
+    "resolution": null,
+    "createdAt": "2026-07-10T07:04:19.067Z",
+    "updatedAt": "2026-07-10T07:04:19.067Z"
+  }
+}
+
+================================================================================
+MESSAGING | GET /bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/messages
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": []
+}
+
+================================================================================
+MESSAGING | POST /bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/messages
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "7bb67b77-a939-4096-8523-00eb90d76ade",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "senderId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "content": "Hello mover, when will you arrive?",
+    "isRead": false,
+    "createdAt": "2026-07-10T07:04:21.715Z"
+  }
+}
+
+================================================================================
+MESSAGING | POST /bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/messages (mover)
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "a2364fb5-eade-423a-b927-570a74825687",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "senderId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+    "content": "Arriving in 30 minutes!",
+    "isRead": false,
+    "createdAt": "2026-07-10T07:04:23.809Z"
+  }
+}
+
+================================================================================
+MESSAGING | PATCH /bookings/5320d99c-5e1e-4f22-9a29-3a33fd1052fc/messages/read
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "Messages marked as read"
+  }
+}
+
+================================================================================
+NOTIFICATIONS | GET /notifications
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "11c04687-bae6-40e9-b9d8-cbbc0a485370",
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "type": "message",
+      "title": "New message",
+      "body": "Arriving in 30 minutes!",
+      "metadata": {
+        "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+        "messageId": "a2364fb5-eade-423a-b927-570a74825687"
+      },
+      "isRead": false,
+      "createdAt": "2026-07-10T07:04:24.363Z"
+    },
+    {
+      "id": "b8a770fa-b7cc-4f8d-9ffd-6dcbb53474de",
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "type": "quote_received",
+      "title": "New quote received",
+      "body": "A mover submitted a quote of $400 for your moving request.",
+      "metadata": {
+        "quoteId": "ed684b31-92ef-47e3-8d85-d38f9389b24d",
+        "requestId": "d68d2890-6de8-42d8-871a-923e63aebfbf"
+      },
+      "isRead": false,
+      "createdAt": "2026-07-10T07:04:01.241Z"
+    },
+    {
+      "id": "071774ca-079c-4f2f-aa22-50243906b6c9",
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "type": "booking_status",
+      "title": "Booking status updated",
+      "body": "Your booking status is now completed.",
+      "metadata": {
+        "status": "completed",
+        "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc"
+      },
+      "isRead": false,
+      "createdAt": "2026-07-10T07:03:51.994Z"
+    },
+    {
+      "id": "371109d8-4567-47cc-a962-4b1654450063",
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "type": "booking_status",
+      "title": "Booking status updated",
+      "body": "Your booking status is now in_progress.",
+      "metadata": {
+        "status": "in_progress",
+        "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc"
+      },
+      "isRead": false,
+      "createdAt": "2026-07-10T07:03:45.239Z"
+    },
+    {
+      "id": "b8e89780-928f-4034-b3fc-779b6aec3871",
+      "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "type": "quote_received",
+      "title": "New qu
+... [truncated]
+
+================================================================================
+NOTIFICATIONS | PATCH /notifications/11c04687-bae6-40e9-b9d8-cbbc0a485370/read
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "11c04687-bae6-40e9-b9d8-cbbc0a485370",
+    "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "type": "message",
+    "title": "New message",
+    "body": "Arriving in 30 minutes!",
+    "metadata": {
+      "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+      "messageId": "a2364fb5-eade-423a-b927-570a74825687"
+    },
+    "isRead": true,
+    "createdAt": "2026-07-10T07:04:24.363Z"
+  }
+}
+
+================================================================================
+NOTIFICATIONS | PATCH /notifications/read-all
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "All notifications marked as read"
+  }
+}
+
+================================================================================
+ADMIN | GET /admin/users
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "email": "apitest-mover-1783684889016@example.com",
+      "roles": [
+        "mover"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:34.586Z",
+      "updatedAt": "2026-07-10T07:01:44.417Z",
+      "customerProfile": null,
+      "moverProfile": {
+        "id": "9b72f998-6a97-451b-85b7-f1bfc96966d4",
+        "businessName": "API Test Movers Updated",
+        "phone": "4165550200",
+        "bio": "Professional movers",
+        "isVerified": true,
+        "avatarUrl": null,
+        "serviceAreas": [
+          "Toronto",
+          "Mississauga"
+        ],
+        "documents": [
+          {
+            "url": "https://example.com/license.pdf",
+            "type": "license",
+            "status": "verified"
+          }
+        ],
+        "availability": null,
+        "userId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+        "createdAt": "2026-07-10T07:01:34.586Z",
+        "updatedAt": "2026-07-10T07:03:05.348Z"
+      }
+    },
+    {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z",
+      "customerProfile": {
+        "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+        "firstName": "API",
+        "lastName": "Tester",
+        "phone": "4165550199",
+        "avatarUrl": null,
+        "address": null,
+        "preferences": {
+          "theme": "dark",
+          "notifications": true
+        },
+        "language": "en",
+        "notificationSettings": {
+          "sms": false,
+          "push": false,
+          "email": true
+        },
+        "privacy": {
+          "shareData": false,
+          "showProfile": true
+        },
+        "userId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    
+... [truncated]
+
+================================================================================
+ADMIN | GET /admin/bookings
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "0c803c87-19a1-4ab1-b4a4-e52c2850d02d",
+      "scheduledDate": "2026-09-15T10:00:00.000Z",
+      "price": "98.10",
+      "estimatedPrice": "98.10",
+      "status": "cancelled",
+      "pickupAddress": {
+        "city": "Toronto",
+        "street": "100 King St W",
+        "country": "CA",
+        "province": "ON",
+        "postalCode": "M5H 1A1"
+      },
+      "destinationAddress": {
+        "city": "Toronto",
+        "street": "200 Bay St",
+        "country": "CA",
+        "province": "ON",
+        "postalCode": "M5J 2J4"
+      },
+      "vehicleTypeId": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+      "pricingBreakdown": {
+        "total": 98.1,
+        "distanceKm": 5.2,
+        "vehicleType": {
+          "id": "ba78d9ec-b0b5-4160-b4ae-c350278b1fd8",
+          "name": "Cargo Van",
+          "isActive": true,
+          "basePrice": "89.00",
+          "createdAt": "2026-07-09T12:41:55.620Z",
+          "updatedAt": "2026-07-09T12:41:55.620Z",
+          "pricePerKm": "1.75",
+          "description": "Best for studio and one-bedroom moves",
+          "maxVolumeM3": "8.00",
+          "maxWeightKg": "800.00",
+          "moverCapacity": 2
+        },
+        "zonePricing": null,
+        "vehiclePrice": 98.1
+      },
+      "notes": "Booking to cancel via /bookings endpoint",
+      "shareToken": null,
+      "currentLatitude": null,
+      "currentLongitude": null,
+      "requestId": null,
+      "request": null,
+      "moverId": null,
+      "mover": null,
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "customer": {
+        "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "email": "apitest-customer-1783684889016@example.com",
+        "roles": [
+          "customer"
+        ],
+        "isActive": true,
+        "isVerified": true,
+        "createdAt": "2026-07-10T07:01:30.562Z",
+        "updatedAt": "2026-07-10T07:01:42.534Z",
+        "customerProfile": {
+          "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+... [truncated]
+
+================================================================================
+ADMIN | GET /admin/disputes
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": "2bda09ae-c057-4c2d-afa6-dbfa47ee854d",
+      "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+      "booking": {
+        "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+        "scheduledDate": "2026-09-15T00:00:00.000Z",
+        "price": "780.00",
+        "estimatedPrice": "780.00",
+        "status": "completed",
+        "pickupAddress": {
+          "street": "100 Start St, Toronto"
+        },
+        "destinationAddress": {
+          "street": "200 End Ave, Toronto"
+        },
+        "vehicleTypeId": null,
+        "pricingBreakdown": null,
+        "notes": null,
+        "shareToken": null,
+        "currentLatitude": null,
+        "currentLongitude": null,
+        "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+        "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+        "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "quoteId": "b2e1887a-f322-4e86-92db-716a102ae73f",
+        "cancellationReason": null,
+        "createdAt": "2026-07-10T07:03:31.787Z",
+        "updatedAt": "2026-07-10T07:03:50.692Z"
+      },
+      "raisedById": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "raisedBy": {
+        "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+        "email": "apitest-customer-1783684889016@example.com",
+        "roles": [
+          "customer"
+        ],
+        "isActive": true,
+        "isVerified": true,
+        "createdAt": "2026-07-10T07:01:30.562Z",
+        "updatedAt": "2026-07-10T07:01:42.534Z",
+        "customerProfile": {
+          "id": "c7efd56a-e59e-4b0d-9e95-8891d95b40ba",
+          "firstName": "API",
+          "lastName": "Tester",
+          "phone": "4165550199",
+          "avatarUrl": null,
+          "address": null,
+          "preferences": {
+            "theme": "dark",
+            "notifications": true
+          },
+          "language": "en",
+          "notificationSettings": {
+            "sms": false,
+            "push": false,
+            "email": true
+          },
+ 
+... [truncated]
+
+================================================================================
+ADMIN | POST /admin/disputes/2bda09ae-c057-4c2d-afa6-dbfa47ee854d/resolve
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "2bda09ae-c057-4c2d-afa6-dbfa47ee854d",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "raisedById": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "raisedBy": {
+      "id": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "email": "apitest-customer-1783684889016@example.com",
+      "roles": [
+        "customer"
+      ],
+      "isActive": true,
+      "isVerified": true,
+      "createdAt": "2026-07-10T07:01:30.562Z",
+      "updatedAt": "2026-07-10T07:01:42.534Z"
+    },
+    "reason": "Minor damage to item during API test",
+    "status": "resolved",
+    "resolution": "Refund issued - API test resolution",
+    "createdAt": "2026-07-10T07:04:19.067Z",
+    "updatedAt": "2026-07-10T07:04:32.114Z"
+  }
+}
+
+================================================================================
+ADMIN | POST /admin/promotions
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "aee5c36c-f5da-467b-8728-dcc53cae9a92",
+    "code": "TEST889016",
+    "title": "API Test Promo",
+    "description": "10% off",
+    "discountPercent": 10,
+    "discountAmount": null,
+    "validFrom": "2026-01-01T00:00:00.000Z",
+    "validTo": "2027-12-31T23:59:59.000Z",
+    "isActive": true,
+    "createdAt": "2026-07-10T07:04:34.264Z",
+    "updatedAt": "2026-07-10T07:04:34.264Z"
+  }
+}
+
+================================================================================
+ADMIN | POST /admin/payments/a571a073-0ce3-4d95-bd99-363bc139563f/refund
+STATUS: 201 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "id": "a571a073-0ce3-4d95-bd99-363bc139563f",
+    "bookingId": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+    "booking": {
+      "id": "5320d99c-5e1e-4f22-9a29-3a33fd1052fc",
+      "scheduledDate": "2026-09-15T00:00:00.000Z",
+      "price": "780.00",
+      "estimatedPrice": "780.00",
+      "status": "completed",
+      "pickupAddress": {
+        "street": "100 Start St, Toronto"
+      },
+      "destinationAddress": {
+        "street": "200 End Ave, Toronto"
+      },
+      "vehicleTypeId": null,
+      "pricingBreakdown": null,
+      "notes": null,
+      "shareToken": null,
+      "currentLatitude": null,
+      "currentLongitude": null,
+      "requestId": "609ada42-d986-4907-8873-77487e0af3a0",
+      "moverId": "ce828b5b-d268-412d-b5e9-936a95faaecc",
+      "customerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+      "quoteId": "b2e1887a-f322-4e86-92db-716a102ae73f",
+      "cancellationReason": null,
+      "createdAt": "2026-07-10T07:03:31.787Z",
+      "updatedAt": "2026-07-10T07:03:50.692Z"
+    },
+    "payerId": "f2854147-f2f9-47ba-af12-7d569aff0dd5",
+    "amount": "780.00",
+    "platformCommission": "78.00",
+    "status": "refunded",
+    "transactionRef": "TXN-1783684889016",
+    "invoiceNumber": "INV-1783685033262",
+    "createdAt": "2026-07-10T07:03:53.904Z",
+    "updatedAt": "2026-07-10T07:04:36.879Z"
+  }
+}
+
+================================================================================
+ADMIN | GET /admin/analytics
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "users": {
+      "total": 11,
+      "customers": 5,
+      "movers": 5
+    },
+    "marketplace": {
+      "requests": 6,
+      "quotes": 6,
+      "bookings": 15,
+      "completedBookings": 3
+    },
+    "revenue": {
+      "totalRevenue": 0,
+      "totalCommission": 0
+    },
+    "quality": {
+      "totalReviews": 3,
+      "averageRating": 5,
+      "openDisputes": 0
+    }
+  }
+}
+
+================================================================================
+SAVED ADDRESSES | DELETE /saved-addresses/9ff23e63-5881-4f99-b305-24e0633ac9ac
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "Saved address deleted"
+  }
+}
+
+================================================================================
+ZONES | DELETE /zones/507f8379-5513-4d20-94ac-5c5a9ea16b18
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "Zone deleted"
+  }
+}
+
+================================================================================
+AUTH | POST /auth/logout
+STATUS: 200 ✓ PASS
+--------------------------------------------------------------------------------
+{
+  "success": true,
+  "data": {
+    "message": "Logged out successfully"
+  }
+}
+
+================================================================================
+SUMMARY
+================================================================================
+Total endpoints tested: 93
+PASSED (2xx): 93
+FAILED (non-2xx): 0
+SKIPPED: 0
+Success rate: 100.0%
+
+Test accounts created:
+  Customer: apitest-customer-1783684889016@example.com
+  Mover: apitest-mover-1783684889016@example.com
+  Admin: admin@movethisout.com (seeded)

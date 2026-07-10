@@ -27,8 +27,9 @@ export class AuthService {
   async register(registerDto: RegisterDto) {
     const user = await this.usersService.create(registerDto);
 
+    let verificationToken: string | undefined;
     if (!user.isVerified) {
-      const verificationToken =
+      verificationToken =
         await this.usersService.setEmailVerificationToken(user.id);
       console.log(
         `Email verification token for ${user.email}: ${verificationToken}`,
@@ -41,10 +42,23 @@ export class AuthService {
 
     // Remove sensitive fields
     const { password, refreshTokenHash, ...userResponse } = user;
-    return {
+    const response: {
+      user: typeof userResponse;
+      tokens: typeof tokens;
+      verificationToken?: string;
+    } = {
       user: userResponse,
       tokens,
     };
+
+    if (
+      verificationToken &&
+      this.configService.get<string>('NODE_ENV') === 'development'
+    ) {
+      response.verificationToken = verificationToken;
+    }
+
+    return response;
   }
 
   async login(loginDto: LoginDto) {
@@ -120,9 +134,19 @@ export class AuthService {
         `Password reset token for ${result.user.email}: ${result.token}`,
       );
     }
-    return {
+
+    const response: { message: string; resetToken?: string } = {
       message: 'If the email exists, a password reset link has been sent.',
     };
+
+    if (
+      result?.token &&
+      this.configService.get<string>('NODE_ENV') === 'development'
+    ) {
+      response.resetToken = result.token;
+    }
+
+    return response;
   }
 
   async resetPassword(dto: ResetPasswordDto) {

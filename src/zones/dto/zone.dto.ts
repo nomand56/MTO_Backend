@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 
 export class CreateZoneDto {
@@ -55,25 +56,30 @@ export class UpdateZoneDto extends PartialType(CreateZoneDto) {}
 
 export class CheckZoneDto {
   @ApiProperty({ example: 43.6532 })
+  @Type(() => Number)
   @IsNumber()
   latitude: number;
 
   @ApiProperty({ example: -79.3832 })
+  @Type(() => Number)
   @IsNumber()
   longitude: number;
 }
 
 export class ZonePricingQueryDto {
   @ApiProperty({ example: 43.6532 })
+  @Type(() => Number)
   @IsNumber()
   latitude: number;
 
   @ApiProperty({ example: -79.3832 })
+  @Type(() => Number)
   @IsNumber()
   longitude: number;
 
   @ApiPropertyOptional({ example: 12.5 })
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   distanceKm?: number;
 
@@ -85,10 +91,12 @@ export class ZonePricingQueryDto {
 
 export class ZoneAvailabilityQueryDto {
   @ApiProperty({ example: 43.6532 })
+  @Type(() => Number)
   @IsNumber()
   latitude: number;
 
   @ApiProperty({ example: -79.3832 })
+  @Type(() => Number)
   @IsNumber()
   longitude: number;
 
