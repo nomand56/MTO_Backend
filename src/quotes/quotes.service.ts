@@ -50,9 +50,22 @@ export class QuotesService {
       where: { requestId, moverId },
     });
     if (existing) {
-      throw new ConflictException(
-        'You already submitted a quote for this request',
-      );
+      if (
+        existing.status === QuoteStatus.Accepted ||
+        existing.status === QuoteStatus.Rejected
+      ) {
+        throw new ConflictException(
+          'This quote can no longer be updated',
+        );
+      }
+
+      Object.assign(existing, {
+        price: dto.price,
+        estimatedHours: dto.estimatedHours,
+        notes: dto.notes,
+        status: QuoteStatus.Pending,
+      });
+      return this.quoteRepository.save(existing);
     }
 
     const quote = this.quoteRepository.create({

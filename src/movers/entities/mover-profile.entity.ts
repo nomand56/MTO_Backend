@@ -3,11 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToOne,
+  OneToMany,
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { MoverVehicleType } from './mover-vehicle-type.entity';
 
 @Entity('mover_profiles')
 export class MoverProfile {
@@ -37,6 +39,24 @@ export class MoverProfile {
 
   @Column({ type: 'jsonb', nullable: true })
   availability?: { days: string[]; hours: string };
+
+  @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+  latitude?: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
+  longitude?: number;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  locationUpdatedAt?: Date;
+
+  @Column({ default: false })
+  isOnline: boolean;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  lastSeenAt?: Date;
+
+  @OneToMany(() => MoverVehicleType, (vehicleType) => vehicleType.moverProfile)
+  vehicleTypes: MoverVehicleType[];
 
   @Column()
   userId: string;

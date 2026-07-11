@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -62,16 +61,30 @@ export class ZonesService {
 
   async getPricing(dto: ZonePricingQueryDto) {
     const coverage = await this.checkCoverage(dto);
-    if (!coverage.covered || coverage.zones.length === 0) {
-      throw new BadRequestException('Location is outside service zones');
-    }
-
-    const zone = coverage.zones[0];
     const scheduledAt = dto.scheduledAt
       ? new Date(dto.scheduledAt)
       : new Date();
     const peakMultiplier = await this.getPeakMultiplier(scheduledAt);
-    const distanceKm = dto.distanceKm ?? 0;
+    const distanceKm = dto.distanceKm ?? 10;
+
+    if (!coverage.covered || coverage.zones.length === 0) {
+      const baseFee = 55;
+      const subtotal = baseFee + distanceKm * 2.5;
+      const total = subtotal * peakMultiplier;
+
+      return {
+        zone: null,
+        distanceKm,
+        peakMultiplier,
+        zoneMultiplier: 1,
+        baseFee,
+        subtotal,
+        total: Number(total.toFixed(2)),
+        fallback: true,
+      };
+    }
+
+    const zone = coverage.zones[0];
     const zoneMultiplier = Number(zone.basePriceMultiplier);
     const baseFee = Number(zone.baseFee);
     const subtotal = baseFee + distanceKm * 2.5;
@@ -84,7 +97,7 @@ export class ZonesService {
       zoneMultiplier,
       baseFee,
       subtotal,
-      total,
+      total: Number(total.toFixed(2)),
     };
   }
 
@@ -158,6 +171,10 @@ export class ZonesService {
       }
     }
     return inside;
+  }
+
+  distanceKm(lat1: number, lng1: number, lat2: number, lng2: number) {
+    return this.haversineKm(lat1, lng1, lat2, lng2);
   }
 
   private haversineKm(lat1: number, lng1: number, lat2: number, lng2: number) {

@@ -31,6 +31,7 @@ import { QuotesService } from '../quotes/quotes.service';
 import { BookingsService } from '../bookings/bookings.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { UpsertMoverProfileDto } from './dto/upsert-mover-profile.dto';
+import { UpdatePresenceDto } from './dto/update-presence.dto';
 import {
   CreateQuoteDto,
   CreateCounterofferDto,
@@ -83,6 +84,20 @@ export class MoversController {
   @ApiOkResponse({ description: 'Current mover profile' })
   getProfile(@CurrentUser() user: AuthenticatedUser) {
     return this.moversService.getProfile(user.id);
+  }
+
+  @Put('presence')
+  @ApiOperation({
+    summary: 'Update online status and GPS location',
+    description:
+      'Driver heartbeat endpoint. Requires coordinates when going online.',
+  })
+  @ApiOkResponse({ description: 'Presence updated' })
+  updatePresence(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: UpdatePresenceDto,
+  ) {
+    return this.moversService.updatePresence(user.id, dto);
   }
 
   @Get('available-requests')

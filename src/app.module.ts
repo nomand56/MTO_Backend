@@ -28,6 +28,7 @@ import { CustomersModule } from './customers/customers.module';
 import { SavedAddressesModule } from './saved-addresses/saved-addresses.module';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { ZonesModule } from './zones/zones.module';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { ZonesModule } from './zones/zones.module';
     SavedAddressesModule,
     VehiclesModule,
     ZonesModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [

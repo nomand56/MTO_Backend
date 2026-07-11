@@ -91,4 +91,30 @@ describe('QuotesService', () => {
     );
     expect(mockNotificationsService.create).toHaveBeenCalled();
   });
+
+  it('updates an existing pending quote instead of conflicting', async () => {
+    mockRequestsService.findById.mockResolvedValue({
+      id: 'req-1',
+      customerId: 'customer-1',
+      status: MovingRequestStatus.Active,
+    });
+    mockQuoteRepository.findOne.mockResolvedValue({
+      id: 'quote-1',
+      requestId: 'req-1',
+      moverId: 'mover-1',
+      status: 'pending',
+      price: 400,
+    });
+
+    const result = await service.createQuote('mover-1', 'req-1', {
+      price: 500,
+      estimatedHours: 4,
+    });
+
+    expect(mockQuoteRepository.save).toHaveBeenCalledWith(
+      expect.objectContaining({ price: 500 }),
+    );
+    expect(mockNotificationsService.create).not.toHaveBeenCalled();
+    expect(result.price).toBe(500);
+  });
 });

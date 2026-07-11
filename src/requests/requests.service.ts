@@ -49,7 +49,7 @@ export class RequestsService {
       where: {
         status: In([MovingRequestStatus.Pending, MovingRequestStatus.Active]),
       },
-      relations: { customer: { customerProfile: true }, quotes: true },
+      relations: { customer: { customerProfile: true }, quotes: { counteroffers: true } },
       order: { createdAt: 'DESC' },
     });
   }
