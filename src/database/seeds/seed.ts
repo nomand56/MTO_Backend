@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { config } from 'dotenv';
 import { join } from 'path';
 import { UserRole } from '../../common/enums/user-role.enum';
@@ -6,6 +6,7 @@ import { hashPassword } from '../../common/utils/hash.util';
 import { User } from '../../users/entities/user.entity';
 import { CustomerProfile } from '../../users/entities/customer-profile.entity';
 import { MoverProfile } from '../../movers/entities/mover-profile.entity';
+import { MoverVehicleType } from '../../movers/entities/mover-vehicle-type.entity';
 import { VehicleType } from '../../vehicles/entities/vehicle-type.entity';
 import { Zone } from '../../zones/entities/zone.entity';
 import { PeakHourConfig } from '../../zones/entities/peak-hour-config.entity';
@@ -25,6 +26,175 @@ const dataSource = new DataSource({
   synchronize: true,
 });
 
+type DemoOnlineMover = {
+  email: string;
+  password: string;
+  businessName: string;
+  phone: string;
+  bio: string;
+  latitude: number;
+  longitude: number;
+  vehicleNames: string[];
+};
+
+const DEMO_ONLINE_MOVERS: DemoOnlineMover[] = [
+  {
+    email: 'mover1@movethisout.com',
+    password: 'Mover123!',
+    businessName: 'Northline Movers',
+    phone: '555-0301',
+    bio: 'Cargo Van · Ford Transit 2021 · 2 helpers available',
+    latitude: 43.662,
+    longitude: -79.381,
+    vehicleNames: ['Cargo Van', '16ft Box Truck'],
+  },
+  {
+    email: 'mover2@movethisout.com',
+    password: 'Mover123!',
+    businessName: 'CityVan Express',
+    phone: '555-0302',
+    bio: 'Cargo Van · Mercedes Sprinter 2022 · 2 helpers available',
+    latitude: 43.648,
+    longitude: -79.392,
+    vehicleNames: ['Cargo Van'],
+  },
+  {
+    email: 'mover3@movethisout.com',
+    password: 'Mover123!',
+    businessName: 'Big Load Bros',
+    phone: '555-0303',
+    bio: '16ft Box Truck · Isuzu NPR 2020 · 2 helpers available',
+    latitude: 43.671,
+    longitude: -79.365,
+    vehicleNames: ['16ft Box Truck', '26ft Box Truck'],
+  },
+  {
+    email: 'mover4@movethisout.com',
+    password: 'Mover123!',
+    businessName: 'Metro Muscle Moving',
+    phone: '555-0304',
+    bio: 'Cargo Van · Nissan NV200 2020 · 1 helper available',
+    latitude: 43.641,
+    longitude: -79.405,
+    vehicleNames: ['Cargo Van'],
+  },
+  {
+    email: 'mover5@movethisout.com',
+    password: 'Mover123!',
+    businessName: 'Swift Haul Co.',
+    phone: '555-0305',
+    bio: '26ft Box Truck · large home moves',
+    latitude: 43.655,
+    longitude: -79.358,
+    vehicleNames: ['26ft Box Truck'],
+  },
+];
+
+async function ensureOnlineDemoMovers(
+  userRepo: Repository<User>,
+  moverProfileRepo: Repository<MoverProfile>,
+  vehicleTypeRepo: Repository<VehicleType>,
+  moverVehicleRepo: Repository<MoverVehicleType>,
+) {
+  const vehicleTypes = await vehicleTypeRepo.find();
+  const now = new Date();
+
+  for (const demo of DEMO_ONLINE_MOVERS) {
+    let user = await userRepo.findOne({ where: { email: demo.email } });
+    if (!user) {
+      const hashedPassword = await hashPassword(demo.password);
+      user = await userRepo.save(
+        userRepo.create({
+          email: demo.email,
+          password: hashedPassword,
+          roles: [UserRole.Mover],
+          isActive: true,
+          isVerified: true,
+        }),
+      );
+      console.log(`Seeded demo mover user: ${demo.email}`);
+    }
+
+    let profile = await moverProfileRepo.findOne({ where: { userId: user.id } });
+    if (!profile) {
+      profile = moverProfileRepo.create({
+        userId: user.id,
+        businessName: demo.businessName,
+        phone: demo.phone,
+        bio: demo.bio,
+        isVerified: true,
+        serviceAreas: ['Greater Toronto Area'],
+        documents: [],
+        availability: { days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], hours: '8:00-20:00' },
+      });
+    }
+
+    profile.businessName = demo.businessName;
+    profile.phone = demo.phone;
+    profile.bio = demo.bio;
+    profile.isVerified = true;
+    profile.isOnline = true;
+    profile.latitude = demo.latitude;
+    profile.longitude = demo.longitude;
+    profile.locationUpdatedAt = now;
+    profile.lastSeenAt = now;
+    await moverProfileRepo.save(profile);
+
+    const linked = await moverVehicleRepo.find({
+      where: { moverProfileId: profile.id },
+    });
+    if (!linked.length) {
+      const vehicleIds = demo.vehicleNames
+        .map((name) => vehicleTypes.find((type) => type.name === name)?.id)
+        .filter((id): id is string => !!id);
+
+      for (const [index, vehicleTypeId] of vehicleIds.entries()) {
+        await moverVehicleRepo.save(
+          moverVehicleRepo.create({
+            moverProfileId: profile.id,
+            vehicleTypeId,
+            isPrimary: index === 0,
+          }),
+        );
+      }
+      console.log(`Linked vehicles for ${demo.businessName}`);
+    }
+  }
+
+  const legacyMover = await userRepo.findOne({
+    where: { email: 'mover@movethisout.com' },
+  });
+  if (legacyMover) {
+    const profile = await moverProfileRepo.findOne({
+      where: { userId: legacyMover.id },
+    });
+    if (profile) {
+      profile.isOnline = true;
+      profile.isVerified = true;
+      profile.latitude = 43.6532;
+      profile.longitude = -79.3832;
+      profile.locationUpdatedAt = now;
+      profile.lastSeenAt = now;
+      await moverProfileRepo.save(profile);
+
+      const cargoVan = vehicleTypes.find((type) => type.name === 'Cargo Van');
+      const linked = await moverVehicleRepo.find({
+        where: { moverProfileId: profile.id },
+      });
+      if (cargoVan && !linked.length) {
+        await moverVehicleRepo.save(
+          moverVehicleRepo.create({
+            moverProfileId: profile.id,
+            vehicleTypeId: cargoVan.id,
+            isPrimary: true,
+          }),
+        );
+      }
+      console.log('Updated legacy mover@movethisout.com to online');
+    }
+  }
+}
+
 async function seed() {
   await dataSource.initialize();
   console.log(
@@ -35,6 +205,7 @@ async function seed() {
   const customerProfileRepo = dataSource.getRepository(CustomerProfile);
   const moverProfileRepo = dataSource.getRepository(MoverProfile);
   const vehicleTypeRepo = dataSource.getRepository(VehicleType);
+  const moverVehicleRepo = dataSource.getRepository(MoverVehicleType);
   const zoneRepo = dataSource.getRepository(Zone);
   const peakHourRepo = dataSource.getRepository(PeakHourConfig);
 
@@ -213,6 +384,13 @@ async function seed() {
       );
     }
   }
+
+  await ensureOnlineDemoMovers(
+    userRepo,
+    moverProfileRepo,
+    vehicleTypeRepo,
+    moverVehicleRepo,
+  );
 
   await dataSource.destroy();
   console.log('Seeding complete.');

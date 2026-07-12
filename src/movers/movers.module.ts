@@ -13,6 +13,7 @@ import { Review } from '../reviews/entities/review.entity';
 import { Booking } from '../bookings/entities/booking.entity';
 import { VehicleType } from '../vehicles/entities/vehicle-type.entity';
 import { ZonesModule } from '../zones/zones.module';
+import { PaymentsModule } from '../payments/payments.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ZonesModule } from '../zones/zones.module';
     BookingsModule,
     TrackingModule,
     ZonesModule,
+    PaymentsModule,
   ],
   controllers: [MoversController, MoversDiscoveryController],
   providers: [MoversService],

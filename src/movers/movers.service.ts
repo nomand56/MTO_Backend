@@ -194,10 +194,6 @@ export class MoversService {
         longitude,
       );
 
-      if (distanceKm > radiusKm) {
-        continue;
-      }
-
       const vehicleTypes = (profile.vehicleTypes ?? [])
         .map((entry) => entry.vehicleType)
         .filter((vehicleType): vehicleType is VehicleType => !!vehicleType)
@@ -242,6 +238,11 @@ export class MoversService {
         averageRating: stats?.averageRating ?? 0,
         completedMoves,
       });
+    }
+
+    const withinRadius = movers.filter((mover) => mover.distanceKm <= radiusKm);
+    if (withinRadius.length > 0) {
+      movers = withinRadius;
     }
 
     movers = this.sortNearbyMovers(movers, sortBy);

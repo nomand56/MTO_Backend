@@ -39,6 +39,8 @@ import {
 import { RespondCounterofferDto } from '../quotes/dto/respond-counteroffer.dto';
 import { UpdateBookingStatusDto } from '../bookings/dto/update-booking-status.dto';
 import { CreateTrackingEventDto } from '../tracking/dto/create-tracking-event.dto';
+import { BookingItemPhotoDto } from '../bookings/dto/booking.dto';
+import { PaymentsService } from '../payments/payments.service';
 
 @ApiTags('Movers')
 @ApiBearerAuth('JWT-auth')
@@ -52,6 +54,7 @@ export class MoversController {
     private readonly quotesService: QuotesService,
     private readonly bookingsService: BookingsService,
     private readonly trackingService: TrackingService,
+    private readonly paymentsService: PaymentsService,
   ) {}
 
   @Post('profile')
@@ -175,6 +178,31 @@ export class MoversController {
     return this.bookingsService.findByMover(user.id);
   }
 
+  @Get('wallet')
+  @ApiOperation({
+    summary: 'Mover wallet & earnings',
+    description:
+      'Available balance, job earnings, tips, and payment history for the mover.',
+  })
+  @ApiOkResponse({ description: 'Mover wallet summary' })
+  getWallet(@CurrentUser() user: AuthenticatedUser) {
+    return this.paymentsService.getMoverWallet(user.id);
+  }
+
+  @Get('payments/:paymentId/invoice')
+  @ApiOperation({
+    summary: 'View released payment invoice',
+    description: 'Full invoice for a completed customer payment released to the mover.',
+  })
+  @ApiParam({ name: 'paymentId', description: 'Payment UUID' })
+  @ApiOkResponse({ description: 'Released invoice' })
+  getPaymentInvoice(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('paymentId') paymentId: string,
+  ) {
+    return this.paymentsService.getReleasedInvoiceForMover(user.id, paymentId);
+  }
+
   @Post('bookings/:id/accept')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
@@ -237,5 +265,25 @@ export class MoversController {
     return this.trackingService.getTimeline(bookingId, user.id, [
       UserRole.Mover,
     ]);
+  }
+
+  @Post('bookings/:id/completion-photo')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Upload delivery proof photo for a booking' })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiCreatedResponse({ description: 'Completion photo attached' })
+  uploadCompletionPhoto(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') bookingId: string,
+    @Body() dto: BookingItemPhotoDto,
+  ) {
+    return this.bookingsService.addItemPhoto(
+      bookingId,
+      user.id,
+      [UserRole.Mover],
+      dto.photoUrl,
+      dto.itemId,
+      'Delivery proof',
+    );
   }
 }

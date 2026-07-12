@@ -51,6 +51,10 @@ export class MessagingController {
     );
   }
 
+  private userRoles(user: AuthenticatedUser) {
+    return user.roles as UserRole[];
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
@@ -64,7 +68,12 @@ export class MessagingController {
     @Param('bookingId') bookingId: string,
     @Body() dto: SendMessageDto,
   ) {
-    return this.messagingService.sendMessage(user.id, bookingId, dto);
+    return this.messagingService.sendMessage(
+      user.id,
+      bookingId,
+      dto,
+      this.userRoles(user),
+    );
   }
 
   @Patch('read')

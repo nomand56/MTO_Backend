@@ -41,6 +41,9 @@ export class CustomerProfile {
   @Column({ type: 'jsonb', default: {} })
   privacy: Record<string, unknown>;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  walletBalance: number;
+
   @Column()
   userId: string;
 

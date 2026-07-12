@@ -78,6 +78,26 @@ export class BookingsService {
 
     const saved = await repo.save(booking);
 
+    const requestItems = Array.isArray(request.items) ? request.items : [];
+    if (requestItems.length > 0) {
+      const itemRepo = manager
+        ? manager.getRepository(BookingItem)
+        : this.bookingItemRepository;
+      await itemRepo.save(
+        requestItems.map((item: Record<string, unknown>) =>
+          itemRepo.create({
+            bookingId: saved.id,
+            name: String(item.name ?? 'Item'),
+            quantity: Number(item.quantity ?? item.qty ?? 1),
+            description:
+              typeof item.description === 'string'
+                ? item.description
+                : undefined,
+          }),
+        ),
+      );
+    }
+
     await historyRepo.save(
       historyRepo.create({
         bookingId: saved.id,
@@ -145,6 +165,8 @@ export class BookingsService {
         quote: true,
         review: true,
         items: true,
+        payments: true,
+        disputes: true,
       },
       order: { createdAt: 'DESC' },
     });
@@ -158,6 +180,7 @@ export class BookingsService {
         request: true,
         quote: true,
         items: true,
+        payments: true,
       },
       order: { createdAt: 'DESC' },
     });
@@ -189,6 +212,7 @@ export class BookingsService {
         payments: true,
         items: true,
         shares: true,
+        disputes: true,
       },
     });
 
@@ -457,15 +481,78 @@ export class BookingsService {
 
   async getTracking(id: string, userId: string, roles: UserRole[]) {
     const booking = await this.findByIdForUser(id, userId, roles);
+    const events = [...(booking.trackingEvents ?? [])].sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+
+    const latestWithCoords = [...events]
+      .reverse()
+      .find(
+        (event) =>
+          event.latitude != null &&
+          event.longitude != null &&
+          !Number.isNaN(Number(event.latitude)) &&
+          !Number.isNaN(Number(event.longitude)),
+      );
+
+    let latitude =
+      booking.currentLatitude != null
+        ? Number(booking.currentLatitude)
+        : undefined;
+    let longitude =
+      booking.currentLongitude != null
+        ? Number(booking.currentLongitude)
+        : undefined;
+
+    if (latitude == null && latestWithCoords) {
+      latitude = Number(latestWithCoords.latitude);
+      longitude = Number(latestWithCoords.longitude);
+    }
+
+    if (
+      latitude == null &&
+      booking.mover?.moverProfile?.latitude != null &&
+      booking.mover?.moverProfile?.longitude != null
+    ) {
+      latitude = Number(booking.mover.moverProfile.latitude);
+      longitude = Number(booking.mover.moverProfile.longitude);
+    }
+
     return {
       bookingId: booking.id,
       status: booking.status,
       currentLocation: {
-        latitude: booking.currentLatitude,
-        longitude: booking.currentLongitude,
+        latitude,
+        longitude,
       },
-      events: booking.trackingEvents ?? [],
+      lastUpdatedAt:
+        latestWithCoords?.createdAt ?? booking.updatedAt ?? booking.createdAt,
+      pickupAddress: booking.pickupAddress,
+      destinationAddress: booking.destinationAddress,
+      price: Number(booking.price),
+      scheduledDate: booking.scheduledDate,
+      mover: booking.mover
+        ? {
+            id: booking.mover.id,
+            businessName: booking.mover.moverProfile?.businessName,
+            phone: booking.mover.moverProfile?.phone,
+            bio: booking.mover.moverProfile?.bio,
+            avatarUrl: booking.mover.moverProfile?.avatarUrl,
+          }
+        : undefined,
+      events,
     };
+  }
+
+  async updateCurrentLocation(
+    bookingId: string,
+    latitude: number,
+    longitude: number,
+  ) {
+    await this.bookingRepository.update(bookingId, {
+      currentLatitude: latitude,
+      currentLongitude: longitude,
+    });
   }
 
   async shareBooking(
@@ -559,6 +646,7 @@ export class BookingsService {
     roles: UserRole[],
     photoUrl: string,
     itemId?: string,
+    label = 'Photo attachment',
   ) {
     await this.findByIdForUser(bookingId, userId, roles);
 
@@ -576,7 +664,7 @@ export class BookingsService {
     return this.bookingItemRepository.save(
       this.bookingItemRepository.create({
         bookingId,
-        name: 'Photo attachment',
+        name: label,
         quantity: 1,
         photoUrl,
       }),
@@ -613,6 +701,17 @@ export class BookingsService {
       throw new BadRequestException(
         `Cannot transition from ${booking.status} to ${dto.status}`,
       );
+    }
+
+    if (dto.status === BookingStatus.Completed) {
+      const proofPhotos = (booking.items ?? []).filter(
+        (item) => item.photoUrl && item.name === 'Delivery proof',
+      );
+      if (!proofPhotos.length) {
+        throw new BadRequestException(
+          'Upload at least one delivery proof photo before marking completed',
+        );
+      }
     }
 
     booking.status = dto.status;

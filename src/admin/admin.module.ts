@@ -12,6 +12,7 @@ import { BookingsModule } from '../bookings/bookings.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { AnalyticsModule } from '../analytics/analytics.module';
 import { PaymentsModule } from '../payments/payments.module';
+import { MessagingModule } from '../messaging/messaging.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PaymentsModule } from '../payments/payments.module';
     NotificationsModule,
     AnalyticsModule,
     PaymentsModule,
+    MessagingModule,
   ],
   controllers: [AdminController],
   providers: [AdminService],

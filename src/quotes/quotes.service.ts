@@ -99,7 +99,7 @@ export class QuotesService {
 
     const quote = await this.quoteRepository.findOne({
       where: { id: quoteId, requestId },
-      relations: { mover: true, request: true },
+      relations: { mover: true, request: true, counteroffers: true },
     });
 
     if (!quote) {
@@ -111,6 +111,40 @@ export class QuotesService {
       quote.status !== QuoteStatus.Countered
     ) {
       throw new BadRequestException('Quote cannot be accepted');
+    }
+
+    const counteroffers = [...(quote.counteroffers ?? [])].sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+    const pendingOffers = counteroffers.filter(
+      (c) => c.status === CounterofferStatus.Pending,
+    );
+    const pendingFromCustomer = pendingOffers.find(
+      (c) => c.authorRole === UserRole.Customer,
+    );
+    if (pendingFromCustomer) {
+      throw new BadRequestException(
+        'Waiting for the mover to respond to your counteroffer',
+      );
+    }
+
+    const pendingFromMover = pendingOffers.find(
+      (c) => c.authorRole === UserRole.Mover,
+    );
+    if (pendingFromMover) {
+      pendingFromMover.status = CounterofferStatus.Accepted;
+      await this.counterofferRepository.save(pendingFromMover);
+      quote.price = pendingFromMover.price;
+      quote.status = QuoteStatus.Pending;
+      await this.quoteRepository.save(quote);
+    } else if (counteroffers.length > 0) {
+      const latest = counteroffers[counteroffers.length - 1];
+      if (latest.status !== CounterofferStatus.Accepted) {
+        throw new BadRequestException(
+          'Agree on a price before booking this mover',
+        );
+      }
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -184,6 +218,11 @@ export class QuotesService {
       throw new BadRequestException('Quote is not open for negotiation');
     }
 
+    await this.counterofferRepository.update(
+      { quoteId, status: CounterofferStatus.Pending },
+      { status: CounterofferStatus.Rejected },
+    );
+
     const counteroffer = this.counterofferRepository.create({
       quoteId,
       authorId: userId,
@@ -227,12 +266,35 @@ export class QuotesService {
       throw new NotFoundException('Quote not found');
     }
 
+    const opponentRole =
+      role === UserRole.Customer ? UserRole.Mover : UserRole.Customer;
+
     const latestCounteroffer = await this.counterofferRepository.findOne({
-      where: { quoteId, status: CounterofferStatus.Pending },
+      where: {
+        quoteId,
+        status: CounterofferStatus.Pending,
+        authorRole: opponentRole,
+      },
       order: { createdAt: 'DESC' },
     });
 
     if (!latestCounteroffer) {
+      const acceptedOffer = await this.counterofferRepository.findOne({
+        where: {
+          quoteId,
+          status: CounterofferStatus.Accepted,
+          authorRole: opponentRole,
+        },
+        order: { createdAt: 'DESC' },
+      });
+
+      if (acceptedOffer && accept) {
+        const currentQuote = await this.quoteRepository.findOne({
+          where: { id: quoteId },
+        });
+        return { quote: currentQuote ?? quote, counteroffer: acceptedOffer };
+      }
+
       throw new BadRequestException('No pending counteroffer found');
     }
 

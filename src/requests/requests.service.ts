@@ -29,7 +29,7 @@ export class RequestsService {
   async findAllByCustomer(customerId: string) {
     return this.requestRepository.find({
       where: { customerId },
-      relations: { quotes: { mover: { moverProfile: true } } },
+      relations: { quotes: { mover: { moverProfile: true }, counteroffers: true } },
       order: { createdAt: 'DESC' },
     });
   }

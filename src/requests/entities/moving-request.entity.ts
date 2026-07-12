@@ -32,6 +32,12 @@ export class MovingRequest {
   @Column({ type: 'text', nullable: true })
   additionalNotes?: string;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  estimatedPrice?: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  distanceKm?: number;
+
   @Column({
     type: 'enum',
     enum: MovingRequestStatus,

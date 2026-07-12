@@ -10,6 +10,7 @@ import {
 import { Booking } from '../../bookings/entities/booking.entity';
 import { User } from '../../users/entities/user.entity';
 import { PaymentStatus } from '../../common/enums/payment-status.enum';
+import { PaymentKind } from '../../common/enums/payment-kind.enum';
 
 @Entity('payments')
 export class Payment {
@@ -37,6 +38,13 @@ export class Payment {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   platformCommission: number;
+
+  @Column({
+    type: 'enum',
+    enum: PaymentKind,
+    default: PaymentKind.Job,
+  })
+  kind: PaymentKind;
 
   @Column({
     type: 'enum',

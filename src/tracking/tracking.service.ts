@@ -43,7 +43,17 @@ export class TrackingService {
       ...dto,
     });
 
-    return this.trackingRepository.save(event);
+    const saved = await this.trackingRepository.save(event);
+
+    if (dto.latitude != null && dto.longitude != null) {
+      await this.bookingsService.updateCurrentLocation(
+        bookingId,
+        dto.latitude,
+        dto.longitude,
+      );
+    }
+
+    return saved;
   }
 
   async getTimeline(bookingId: string, userId: string, roles: UserRole[]) {

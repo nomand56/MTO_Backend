@@ -52,6 +52,9 @@ export class MoverProfile {
   @Column({ default: false })
   isOnline: boolean;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  walletBalance: number;
+
   @Column({ type: 'timestamptz', nullable: true })
   lastSeenAt?: Date;
 

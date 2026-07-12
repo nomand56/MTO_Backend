@@ -267,6 +267,13 @@ export class UsersService {
   async updateProfile(userId: string, dto: UpdateProfileDto) {
     const user = await this.getProfile(userId);
 
+    const hasProfileFields =
+      dto.firstName !== undefined ||
+      dto.lastName !== undefined ||
+      dto.phone !== undefined ||
+      dto.avatarUrl !== undefined ||
+      dto.address !== undefined;
+
     if (user.customerProfile) {
       const profile = user.customerProfile;
       if (dto.firstName !== undefined) profile.firstName = dto.firstName;
@@ -275,7 +282,20 @@ export class UsersService {
       if (dto.avatarUrl !== undefined) profile.avatarUrl = dto.avatarUrl;
       if (dto.address !== undefined) profile.address = { ...dto.address };
       await this.customerProfileRepository.save(profile);
-    } else if (user.moverProfile) {
+    } else if (hasProfileFields) {
+      const local = user.email.split('@')[0] ?? 'User';
+      const profile = this.customerProfileRepository.create({
+        userId,
+        firstName: dto.firstName ?? local,
+        lastName: dto.lastName ?? '',
+        phone: dto.phone,
+        avatarUrl: dto.avatarUrl,
+        address: dto.address ? { ...dto.address } : undefined,
+      });
+      await this.customerProfileRepository.save(profile);
+    }
+
+    if (user.moverProfile) {
       const moverUpdates = {
         ...(dto.phone !== undefined ? { phone: dto.phone } : {}),
         ...(dto.avatarUrl !== undefined ? { avatarUrl: dto.avatarUrl } : {}),

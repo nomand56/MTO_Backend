@@ -28,7 +28,7 @@ import {
 import { AdminService } from './admin.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { PaymentsService } from '../payments/payments.service';
-import { CreatePromotionDto, ResolveDisputeDto } from './dto/admin.dto';
+import { CreatePromotionDto, RefundDisputeDto, ResolveDisputeDto } from './dto/admin.dto';
 
 @ApiTags('Admin')
 @ApiBearerAuth('JWT-auth')
@@ -92,6 +92,25 @@ export class AdminController {
     return this.adminService.resolveDispute(admin.id, disputeId, dto);
   }
 
+  @Post('disputes/:id/refund')
+  @ApiOperation({ summary: 'Issue dispute refund to customer wallet' })
+  @ApiParam({ name: 'id', description: 'Dispute UUID' })
+  @ApiOkResponse({ description: 'Refund credited to customer wallet' })
+  issueDisputeRefund(
+    @CurrentUser() admin: AuthenticatedUser,
+    @Param('id') disputeId: string,
+    @Body() dto: RefundDisputeDto,
+  ) {
+    return this.adminService.issueDisputeRefund(admin.id, disputeId, dto);
+  }
+
+  @Get('promotions')
+  @ApiOperation({ summary: 'List all promotions' })
+  @ApiOkResponse({ description: 'List of promotions' })
+  listPromotions() {
+    return this.adminService.listPromotions();
+  }
+
   @Post('promotions')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
@@ -104,6 +123,17 @@ export class AdminController {
     @Body() dto: CreatePromotionDto,
   ) {
     return this.adminService.createPromotion(admin.id, dto);
+  }
+
+  @Get('transactions')
+  @ApiOperation({
+    summary: 'Platform wallet statements',
+    description:
+      'All customer and mover wallet credits/debits with reason and counterparty.',
+  })
+  @ApiOkResponse({ description: 'Wallet transaction ledger' })
+  listTransactions() {
+    return this.paymentsService.getAllWalletStatements();
   }
 
   @Post('payments/:id/refund')

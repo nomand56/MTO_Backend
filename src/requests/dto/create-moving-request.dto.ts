@@ -1,8 +1,10 @@
 import {
   IsArray,
   IsDateString,
+  IsNumber,
   IsOptional,
   IsString,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -37,4 +39,16 @@ export class CreateMovingRequestDto {
   @IsOptional()
   @IsString()
   additionalNotes?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  estimatedPrice?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  distanceKm?: number;
 }

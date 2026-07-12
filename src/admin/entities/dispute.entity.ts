@@ -35,6 +35,9 @@ export class Dispute {
   @Column({ type: 'text' })
   reason: string;
 
+  @Column({ type: 'text', array: true, default: [] })
+  evidenceUrls: string[];
+
   @Column({
     type: 'enum',
     enum: DisputeStatus,
@@ -44,6 +47,9 @@ export class Dispute {
 
   @Column({ type: 'text', nullable: true })
   resolution?: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  refundAmount?: number | null;
 
   @CreateDateColumn()
   createdAt: Date;

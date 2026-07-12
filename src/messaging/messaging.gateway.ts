@@ -10,6 +10,7 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { MessagingService } from './messaging.service';
+import { UserRole } from '../common/enums/user-role.enum';
 
 @WebSocketGateway({ cors: { origin: '*' }, namespace: '/chat' })
 export class MessagingGateway implements OnGatewayConnection {
@@ -66,6 +67,7 @@ export class MessagingGateway implements OnGatewayConnection {
       user.sub,
       data.bookingId,
       { content: data.content },
+      (user.roles ?? []) as UserRole[],
     );
 
     this.server.to(`booking:${data.bookingId}`).emit('newMessage', message);

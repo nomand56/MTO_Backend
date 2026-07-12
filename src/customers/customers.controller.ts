@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   Param,
+  Query,
   UseGuards,
   HttpCode,
   HttpStatus,
@@ -35,6 +36,8 @@ import { CreateCounterofferDto } from '../quotes/dto/create-quote.dto';
 import { CancelBookingDto } from '../bookings/dto/update-booking-status.dto';
 import { CreateReviewDto } from '../reviews/dto/create-review.dto';
 import { CreatePaymentDto, CreateDisputeDto } from '../admin/dto/admin.dto';
+import { PayFromWalletDto, TopUpWalletDto } from '../payments/dto/wallet.dto';
+import { PaymentKind } from '../common/enums/payment-kind.enum';
 
 @ApiTags('Customers')
 @ApiBearerAuth('JWT-auth')
@@ -183,6 +186,68 @@ export class CustomersController {
     @Body() dto: CreatePaymentDto,
   ) {
     return this.paymentsService.createPayment(user.id, bookingId, dto);
+  }
+
+  @Get('wallet')
+  @ApiOperation({
+    summary: 'Customer wallet & payment history',
+    description: 'Total spent, tips paid, and payment receipts.',
+  })
+  @ApiOkResponse({ description: 'Customer wallet summary' })
+  getWallet(@CurrentUser() user: AuthenticatedUser) {
+    return this.paymentsService.getCustomerWallet(user.id);
+  }
+
+  @Post('wallet/top-up')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Add funds to wallet',
+    description: 'Top up customer wallet balance before paying an invoice.',
+  })
+  @ApiCreatedResponse({ description: 'Wallet topped up' })
+  topUpWallet(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: TopUpWalletDto,
+  ) {
+    return this.paymentsService.topUpWallet(user.id, dto.amount);
+  }
+
+  @Get('bookings/:id/invoice')
+  @ApiOperation({
+    summary: 'Get booking invoice',
+    description: 'Full invoice preview before paying from wallet.',
+  })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiOkResponse({ description: 'Invoice details' })
+  getInvoice(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') bookingId: string,
+    @Query('kind') kind?: PaymentKind,
+    @Query('amount') amount?: string,
+  ) {
+    const parsedAmount = amount != null ? Number(amount) : undefined;
+    return this.paymentsService.getBookingInvoice(
+      user.id,
+      bookingId,
+      kind ?? PaymentKind.Job,
+      parsedAmount,
+    );
+  }
+
+  @Post('bookings/:id/pay-wallet')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Pay invoice from wallet',
+    description: 'Deduct wallet balance and record payment with invoice.',
+  })
+  @ApiParam({ name: 'id', description: 'Booking UUID' })
+  @ApiCreatedResponse({ description: 'Payment completed from wallet' })
+  payFromWallet(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') bookingId: string,
+    @Body() dto: PayFromWalletDto,
+  ) {
+    return this.paymentsService.payFromWallet(user.id, bookingId, dto);
   }
 
   @Post('bookings/:id/dispute')

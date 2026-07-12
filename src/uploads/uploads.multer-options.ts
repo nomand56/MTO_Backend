@@ -16,6 +16,12 @@ const allowedMimeTypes = new Set([
   'image/png',
   'image/webp',
   'application/pdf',
+  'audio/webm',
+  'audio/mpeg',
+  'audio/mp4',
+  'audio/ogg',
+  'audio/wav',
+  'audio/x-wav',
 ]);
 
 export const uploadMulterOptions: MulterOptions = {
@@ -30,7 +36,7 @@ export const uploadMulterOptions: MulterOptions = {
     if (!allowedMimeTypes.has(file.mimetype)) {
       callback(
         new BadRequestException(
-          'Unsupported file type. Allowed: JPEG, PNG, WEBP, PDF.',
+          'Unsupported file type. Allowed: JPEG, PNG, WEBP, PDF, and common audio formats.',
         ),
         false,
       );
